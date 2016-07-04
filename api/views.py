@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import permissions, viewsets, status, views
 from .models import (User, UserInfo, EducationInfo, WorkExperience, Intrest,
                      Skills, Certification, Publication, Patent, Books,
-                     Conference, Achievement)
+                     Conference, Achievement, Extracurricular)
 from .permissions import IsAccountOwner
 from .serializers import (UserSerializer,
                           UserInfoSerializer,
@@ -17,7 +17,9 @@ from .serializers import (UserSerializer,
                           PatentSerializer,
                           BooksSerializer,
                           ConferenceSerializer,
-                          AchievementSerializer)
+                          AchievementSerializer,
+                          ExtraCurricularSerializer)
+
 
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
@@ -411,6 +413,32 @@ class ConferenceAPIView(CreateAPIView):
 class AchievementAPIView(CreateAPIView):
     queryset = Achievement.objects.all()
     serializer_class = AchievementSerializer
+
+    def get_or_create_csrf_token(self, request):
+        token = request.META.get('CSRF_COOKIE', None)
+        if token is None:
+            token = csrf._get_new_csrf_key()
+            request.META['CSRF_COOKIE'] = token
+        request.META['CSRF_COOKIE_USED'] = True
+        return token
+
+    def get(self, request, *args, **kwargs):
+        serializer_class = CsrfSerializer
+        csrf = self.get_or_create_csrf_token(request)
+        csrf = csrf.decode('unicode-escape')
+        print csrf
+        return Response({
+            'csrf': csrf,
+
+        })
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class ExtraCurricularAPIView(CreateAPIView):
+    queryset = Extracurricular.objects.all()
+    serializer_class = ExtraCurricularSerializer
 
     def get_or_create_csrf_token(self, request):
         token = request.META.get('CSRF_COOKIE', None)
