@@ -20,7 +20,8 @@ from api.views import (UserViewSet,
                        UserInfoAPIView,
                        EducationalAPIView,
                        LoginView, LogoutView,
-                       WorkExperienceAPIView, IntrestAPIView)
+                       WorkExperienceAPIView, IntrestAPIView,
+                       SkillsAPIView)
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.decorators.csrf import csrf_exempt
@@ -35,6 +36,7 @@ urlpatterns = [
     url(r'^education/', EducationalAPIView.as_view(), name='education_info'),
     url(r'^work/', WorkExperienceAPIView.as_view(), name='work'),
     url(r'^intrest/', IntrestAPIView.as_view(), name='intrest'),
+    url(r'^skills/', SkillsAPIView.as_view(), name='skills'),
 
 ]
 

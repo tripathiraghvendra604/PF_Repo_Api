@@ -2,7 +2,7 @@ from django.contrib.auth import update_session_auth_hash
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from .models import UserInfo, EducationInfo, WorkExperience, Intrest
+from .models import UserInfo, EducationInfo, WorkExperience, Intrest, Skills
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 
@@ -101,6 +101,13 @@ class WorkExperienceSerializer(serializers.ModelSerializer):
                   'from_self', 'to_self', 'project_self', 'status_self')
 
 
+class SkillsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Skills
+        fields = ('technical', 'soft', 'other')
+
+
+
 class IntrestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Intrest
@@ -115,4 +122,3 @@ class UserLoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     email = serializers.EmailField()
     session_id = serializers.CharField()
-
