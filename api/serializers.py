@@ -2,7 +2,8 @@ from django.contrib.auth import update_session_auth_hash
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from .models import UserInfo, EducationInfo, WorkExperience, Intrest, Skills, Certification
+from .models import (UserInfo, EducationInfo, WorkExperience, Intrest, Skills,
+                     Certification, Publication)
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 
@@ -118,6 +119,13 @@ class CertificationSerializer(serializers.ModelSerializer):
         model = Certification
         fields = ('year_online', 'agency_online', 'detail_online',
                   'year_offline', 'agency_offline', 'detail_offline')
+
+
+class PublicationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Publication
+        fields = ('year_national', 'journal_national', 'detail_national', 'status_national',
+                  'year_international', 'journal_international', 'detail_international', 'status_international')
 
 
 class CsrfSerializer(serializers.Serializer):
