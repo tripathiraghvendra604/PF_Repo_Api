@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import permissions, viewsets, status, views
 from .models import (User, UserInfo, EducationInfo, WorkExperience, Intrest,
-                     Skills, Certification, Publication, Patent)
+                     Skills, Certification, Publication, Patent, Books)
 from .permissions import IsAccountOwner
 from .serializers import (UserSerializer,
                           UserInfoSerializer,
@@ -13,7 +13,8 @@ from .serializers import (UserSerializer,
                           SkillsSerializer,
                           CertificationSerializer,
                           PublicationSerializer,
-                          PatentSerializer)
+                          PatentSerializer,
+                          BooksSerializer)
 
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
@@ -329,6 +330,32 @@ class PublicationAPIView(CreateAPIView):
 class PatentAPIView(CreateAPIView):
     queryset = Patent.objects.all()
     serializer_class = PatentSerializer
+
+    def get_or_create_csrf_token(self, request):
+        token = request.META.get('CSRF_COOKIE', None)
+        if token is None:
+            token = csrf._get_new_csrf_key()
+            request.META['CSRF_COOKIE'] = token
+        request.META['CSRF_COOKIE_USED'] = True
+        return token
+
+    def get(self, request, *args, **kwargs):
+        serializer_class = CsrfSerializer
+        csrf = self.get_or_create_csrf_token(request)
+        csrf = csrf.decode('unicode-escape')
+        print csrf
+        return Response({
+            'csrf': csrf,
+
+        })
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class BookAPIView(CreateAPIView):
+    queryset = Books.objects.all()
+    serializer_class = BooksSerializer
 
     def get_or_create_csrf_token(self, request):
         token = request.META.get('CSRF_COOKIE', None)
