@@ -175,3 +175,18 @@ class Conference(models.Model):
         return self.user.username
 
 
+class Achievement(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+
+    # for awards
+    year_a = models.TextField(null=True, blank=True)
+    org_a = models.TextField(null=True, blank=True)
+    detail_a = models.TextField(null=True, blank=True)
+
+    # for scholarships
+    year_s = models.TextField(null=True, blank=True)
+    org_s = models.TextField(null=True, blank=True)
+    detail_s = models.TextField(null=True, blank=True)
+
+    def __unicode__(self):
+        return self.user.username
