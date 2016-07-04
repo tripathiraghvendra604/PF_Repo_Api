@@ -115,4 +115,3 @@ class Publication(models.Model):
     journal_international = models.TextField(null=True, blank=True)
     detail_international = models.TextField(null=True, blank=True)
     status_international = models.TextField(null=True, blank=True)
-    
