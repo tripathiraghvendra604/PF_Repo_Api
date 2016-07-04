@@ -21,7 +21,8 @@ from api.views import (UserViewSet,
                        EducationalAPIView,
                        LoginView, LogoutView,
                        WorkExperienceAPIView, IntrestAPIView,
-                       SkillsAPIView, CertificationAPIView, PublicationAPIView)
+                       SkillsAPIView, CertificationAPIView, PublicationAPIView,
+                       PatentAPIView)
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.decorators.csrf import csrf_exempt
@@ -39,6 +40,7 @@ urlpatterns = [
     url(r'^skills/', SkillsAPIView.as_view(), name='skills'),
     url(r'^certification/', CertificationAPIView.as_view(), name='certification'),
     url(r'^publication/', PublicationAPIView.as_view(), name='publication'),
+    url(r'^patent/', PatentAPIView.as_view(), name='patent'),
 
 ]
 
