@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import permissions, viewsets, status, views
-from .models import User, UserInfo, EducationInfo, WorkExperience, Intrest, Skills, Certification
+from .models import User, UserInfo, EducationInfo, WorkExperience, Intrest, Skills, Certification, Publication
 from .permissions import IsAccountOwner
 from .serializers import (UserSerializer,
                           UserInfoSerializer,
@@ -10,7 +10,8 @@ from .serializers import (UserSerializer,
                           WorkExperienceSerializer,
                           IntrestSerializer,
                           SkillsSerializer,
-                          CertificationSerializer)
+                          CertificationSerializer,
+                          PublicationSerializer)
 
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
@@ -274,6 +275,32 @@ class SkillsAPIView(CreateAPIView):
 class CertificationAPIView(CreateAPIView):
     queryset = Certification.objects.all()
     serializer_class = CertificationSerializer
+
+    def get_or_create_csrf_token(self, request):
+        token = request.META.get('CSRF_COOKIE', None)
+        if token is None:
+            token = csrf._get_new_csrf_key()
+            request.META['CSRF_COOKIE'] = token
+        request.META['CSRF_COOKIE_USED'] = True
+        return token
+
+    def get(self, request, *args, **kwargs):
+        serializer_class = CsrfSerializer
+        csrf = self.get_or_create_csrf_token(request)
+        csrf = csrf.decode('unicode-escape')
+        print csrf
+        return Response({
+            'csrf': csrf,
+
+        })
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class PublicationAPIView(CreateAPIView):
+    queryset = Publication.objects.all()
+    serializer_class = PublicationSerializer
 
     def get_or_create_csrf_token(self, request):
         token = request.META.get('CSRF_COOKIE', None)
