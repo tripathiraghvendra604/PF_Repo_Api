@@ -3,7 +3,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from .models import (UserInfo, EducationInfo, WorkExperience, Intrest, Skills,
-                     Certification, Publication, Patent)
+                     Certification, Publication, Patent, Books)
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 
@@ -133,6 +133,13 @@ class PatentSerializer(serializers.ModelSerializer):
         model = Patent
         fields = ('year_patent', 'detail_patent', 'status_patent', 'patent_no',
                   'year_article', 'journel_article', 'detail_article')
+
+
+class BooksSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Books
+        fields = ('year_book', 'publisher_book', 'detail_book', 'isbn_book',
+                  'year_poster', 'org_poster', 'detail_poster')
 
 
 class CsrfSerializer(serializers.Serializer):
