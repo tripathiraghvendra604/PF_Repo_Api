@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from .models import (UserInfo, EducationInfo, WorkExperience, Intrest, Skills,
                      Certification, Publication, Patent, Books, Conference,
-                     Achievement)
+                     Achievement, Extracurricular)
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 
@@ -155,6 +155,13 @@ class AchievementSerializer(serializers.ModelSerializer):
         model = Achievement
         fields = ('year_a', 'org_a', 'detail_a',
                   'year_s', 'org_s', 'detail_s')
+
+
+class ExtraCurricularSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Extracurricular
+        fields = ('year_e', 'org_e', 'details_e',
+                  'year_v', 'org_v', 'details_v')
 
 
 class CsrfSerializer(serializers.Serializer):
