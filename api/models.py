@@ -22,7 +22,7 @@ class UserInfo(models.Model):
                                  height_field='height_field')
 
     def __unicode__(self):
-        return str(self.user.username)
+        return self.name
 
 
 class EducationInfo(models.Model):
@@ -32,7 +32,7 @@ class EducationInfo(models.Model):
     agreegate = models.TextField()
 
     def __unicode__(self):
-        return str(self.user.username)
+        return self.year
 
 
 class WorkExperience(models.Model):
@@ -64,14 +64,14 @@ class WorkExperience(models.Model):
     status_self = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
-        return str(self.user.username)
+        return self.title_intern
 
 class Intrest(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     intrest = models.TextField()
 
     def __unicode__(self):
-        return str(self.user.username)
+        return self.intrest
 
 
 class Skills(models.Model):
@@ -80,13 +80,15 @@ class Skills(models.Model):
     soft = models.TextField(blank=True, null=True)
     other = models.TextField(blank=True, null=True)
 
-    def __unicode__(self):
-        return str(self.user.username)
-
 
 class Certification(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
-    # for 
+
+    #for online
     year_online = models.TextField(null=True, blank=True)
     agency_online = models.TextField(null=True, blank=True)
     detail_online = models.TextField(null=True, blank=True)
+    #for offline
+    year_offline = models.TextField(null=True, blank=True)
+    agency_offline = models.TextField(null=True, blank=True)
+    detail_offline = models.TextField(null=True, blank=True)
