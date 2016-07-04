@@ -190,3 +190,21 @@ class Achievement(models.Model):
 
     def __unicode__(self):
         return self.user.username
+
+
+class Extracurricular(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+
+    # for extracurricular activities
+    year_e = models.TextField(null=True, blank=True)
+    org_e = models.TextField(null=True, blank=True)
+    details_e = models.TextField(null=True, blank=True)
+
+    # for volunteers activities
+    year_v = models.TextField(null=True, blank=True)
+    org_v = models.TextField(null=True, blank=True)
+    details_v = models.TextField(null=True, blank=True)
+
+    def __unicode__(self):
+        return self.user.username
+
