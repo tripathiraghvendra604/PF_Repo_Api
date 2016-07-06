@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from .models import (UserInfo, EducationInfo, WorkExperience, Intrest, Skills, Certification, Publication,
-                     Patent, Books, Conference, Achievement, Extracurricular)
+                     Patent, Books, Conference, Achievement, Extracurricular, SocialMediaLinks)
 
 admin.site.register(UserInfo)
 admin.site.register(EducationInfo)
@@ -16,3 +16,4 @@ admin.site.register(Books)
 admin.site.register(Conference)
 admin.site.register(Achievement)
 admin.site.register(Extracurricular)
+admin.site.register(SocialMediaLinks)

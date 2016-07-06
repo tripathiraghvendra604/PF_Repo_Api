@@ -208,3 +208,10 @@ class Extracurricular(models.Model):
     def __unicode__(self):
         return self.user.username
 
+
+class SocialMediaLinks(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    links = models.TextField()
+
+    def __unicode__(self):
+        return self.user.username
