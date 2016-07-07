@@ -64,12 +64,22 @@ class UserViewSet(CreateAPIView):
         serializer = self.serializer_class(data=request.data)
 
         if serializer.is_valid():
-            User.objects.create_user(**serializer.validated_data)
 
-            return Response({
-                'status': 'Account Created',
-                'message': 'User Registered'
-            })
+            email = request.data.get('email', None)
+            u = User.objects.filter(email=email).distinct()
+            if u.exists() or u.count() > 0:
+                return Response({
+                    'status': 'Bad Request',
+                    'message': 'This email is already registered!'
+                })
+
+            else:
+                User.objects.create_user(**serializer.validated_data)
+    
+                return Response({
+                    'status': 'Account Created',
+                    'message': 'User Registered'
+                })
 
         return Response({
             'status': 'Bad request',
@@ -100,11 +110,9 @@ class LoginView(views.APIView):
         #print data
         username = data.get('username')
         password = data.get('password')
-        print username, password
         account = authenticate(username=username, password=password)
         if account is not None:
             login(request, account)
-            print 'u are logged in:  '
             #serialized = UserSerializer(account)
             '''serialized = UserLoginSerializer(account)
             serialized.data['session_id'] = self.request.session._session_key.decode('unicode-escape')
@@ -127,7 +135,6 @@ class LogoutView(views.APIView):
 
     def post(self, request, format=None):
         logout(request)
-        print 'logged out'
         return Response({}, status=status.HTTP_204_NO_CONTENT)
 
 
@@ -377,7 +384,6 @@ class BookAPIView(CreateAPIView):
         serializer_class = CsrfSerializer
         csrf = self.get_or_create_csrf_token(request)
         csrf = csrf.decode('unicode-escape')
-        print csrf
         return Response({
             'csrf': csrf,
 
