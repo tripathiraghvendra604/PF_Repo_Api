@@ -65,21 +65,14 @@ class UserViewSet(CreateAPIView):
 
         if serializer.is_valid():
 
-            email = request.data.get('email', None)
-            u = User.objects.filter(email=email).distinct()
-            if u.exists() or u.count() > 0:
-                return Response({
-                    'status': 'Bad Request',
-                    'message': 'This email is already registered!'
-                })
+            print request.data
 
-            else:
-                User.objects.create_user(**serializer.validated_data)
-    
-                return Response({
-                    'status': 'Account Created',
-                    'message': 'User Registered'
-                })
+            User.objects.create_user(**serializer.validated_data)
+
+            return Response({
+                'status': 'Account Created',
+                'message': 'User Registered'
+            })
 
         return Response({
             'status': 'Bad request',
