@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework import permissions, viewsets, status, views
 from .models import (User, UserInfo, EducationInfo, WorkExperience, Intrest,
                      Skills, Certification, Publication, Patent, Books,
@@ -17,7 +17,7 @@ from .serializers import (UserSerializer,
                           PatentSerializer,
                           BooksSerializer,
                           ConferenceSerializer,
-                          AchievementSerializer,
+                          AchievementSerializer, UserLogoutSerializer,
                           ExtraCurricularSerializer, SocialMediaLinksSerializer)
 
 
@@ -25,6 +25,7 @@ from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
 from django.middleware import csrf
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.sessions.models import Session
 
 
 class UserViewSet(CreateAPIView):
@@ -35,10 +36,8 @@ class UserViewSet(CreateAPIView):
     '''def get_permissions(self):
         if self.request.method in permissions.SAFE_METHODS:
             return (permissions.AllowAny(),)
-
         if self.request.method == 'POST':
             return (permissions.AllowAny(),)
-
         return (permissions.IsAuthenticated(), IsAccountOwner(),)'''
 
     # for CSRF Token
@@ -132,10 +131,18 @@ class LoginView(views.APIView):
 
 class LogoutView(views.APIView):
     permission_classes = (permissions.IsAuthenticated, )
+    serializer_class = UserLogoutSerializer
+    print 'logout url'
 
-    def post(self, request, format=None):
+    def post(self, request, *args, **kwargs):
+        '''print request.user, request.session['member_id']
         logout(request)
-        return Response({}, status=status.HTTP_204_NO_CONTENT)
+        return Response({'message': 'Logged Out!'}, status=status.HTTP_200_OK)'''
+        data_dict = request.data
+        exist_user = data_dict['user']
+        user = User.objects.get(username=exist_user)
+        [s.delete() for s in Session.objects.all() if str(s.get_decoded().get('_auth_user_id')) == str(user.id)]
+        return Response({'message': 'Logged Out!'}, status=status.HTTP_200_OK)
 
 
 class UserInfoAPIView(CreateAPIView):
@@ -161,29 +168,31 @@ class UserInfoAPIView(CreateAPIView):
 
         })
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    '''def perform_create(self, serializer):
+        print serializer.data
+        serializer.save(user=self.request.user) '''
 
 
+    def post(self,request, *args, **kwargs):
+        data_dict =  request.data
+        user = data_dict['user']
+        instance_user = get_object_or_404(User, username=user)
+        name = data_dict['name']
+        email = data_dict['email']
+        phone = data_dict['phone']
+        dob = data_dict['dob']
+        profilePic = data_dict['profilePic']
 
-            #def post(self, request, *args, **kwargs):
-        #
-        # data_dict =  request.data
-        # name = data_dict['name']
-        # email = data_dict['email']
-        # phone = data_dict['phone']
-        # dob = data_dict['dob']
-        # profilePic = data_dict['profilePic']
-        #
-        # info = UserInfo(
-        #     name= name,
-        #     email= email,
-        #     phone= phone,
-        #     dob= dob,
-        #     profilePic=profilePic
-        # )
-        # info.save()
-        # return Response(data_dict)
+        info = UserInfo(
+            name= name,
+            email= email,
+            phone= phone,
+            dob= dob,
+            profilePic=profilePic,
+            user=instance_user,
+        )
+        info.save()
+        return Response(data_dict)
 
 
 class EducationalAPIView(CreateAPIView):
