@@ -171,10 +171,15 @@ class SocialMediaLinksSerializer(serializers.ModelSerializer):
 
 
 class CsrfSerializer(serializers.Serializer):
-    csr = serializers.CharField()
+    csrf = serializers.CharField()
 
 
 class UserLoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     email = serializers.EmailField()
     session_id = serializers.CharField()
+
+
+class UserLogoutSerializer(serializers.Serializer):
+    csrf = serializers.CharField()
+    user = serializers.CharField()
