@@ -162,7 +162,7 @@ class ExtraCurricularSerializer(serializers.ModelSerializer):
     class Meta:
         model = Extracurricular
         fields = ('year_e', 'org_e', 'details_e',
-                  'year_v', 'org_v', 'details_v')
+                  'year_v', 'org_v', 'details_v', 'user')
 
 
 class SocialMediaLinksSerializer(serializers.ModelSerializer):
