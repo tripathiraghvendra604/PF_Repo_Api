@@ -30,6 +30,7 @@ class EducationInfo(models.Model):
     year = models.TextField()
     degree = models.TextField()
     agreegate = models.TextField()
+    institution = models.TextField()
 
     def __unicode__(self):
         return self.user.username
