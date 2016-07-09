@@ -236,7 +236,9 @@ class EducationalAPIView(CreateAPIView):
         })
 
     def perform_create(self, serializer):
-        serializer.save(user = self.request.user)
+        user = serializer.validated_data['user']
+        user = get_object_or_404(User, username=user)
+        serializer.save(user=user)
 
 
 class WorkExperienceAPIView(CreateAPIView):
@@ -262,7 +264,9 @@ class WorkExperienceAPIView(CreateAPIView):
         })
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        user = serializer.validated_data['user']
+        user = get_object_or_404(User, username=user)
+        serializer.save(user=user)
 
 
 class IntrestAPIView(CreateAPIView):
