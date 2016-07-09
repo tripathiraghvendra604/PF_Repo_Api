@@ -134,6 +134,24 @@ class LogoutView(views.APIView):
     serializer_class = UserLogoutSerializer
     print 'logout url'
 
+    def get_or_create_csrf_token(self, request):
+        token = request.META.get('CSRF_COOKIE', None)
+        if token is None:
+            token = csrf._get_new_csrf_key()
+            request.META['CSRF_COOKIE'] = token
+        request.META['CSRF_COOKIE_USED'] = True
+        return token
+
+    def get(self, request, *args, **kwargs):
+        serializer_class = CsrfSerializer
+        csrf = self.get_or_create_csrf_token(request)
+        csrf = csrf.decode('unicode-escape')
+        print csrf
+        return Response({
+            'csrf': csrf,
+
+        })
+
     def post(self, request, *args, **kwargs):
         '''print request.user, request.session['member_id']
         logout(request)
@@ -168,12 +186,12 @@ class UserInfoAPIView(CreateAPIView):
 
         })
 
-    '''def perform_create(self, serializer):
-        print serializer.data
-        serializer.save(user=self.request.user) '''
+    def perform_create(self, serializer):
+        user = serializer.validated_data['user']
+        user = get_object_or_404(User, username=user)
+        serializer.save(user=user)
 
-
-    def post(self,request, *args, **kwargs):
+    '''def post(self,request, *args, **kwargs):
         data_dict =  request.data
         user = data_dict['user']
         instance_user = get_object_or_404(User, username=user)
@@ -192,7 +210,7 @@ class UserInfoAPIView(CreateAPIView):
             user=instance_user,
         )
         info.save()
-        return Response(data_dict)
+        return Response(data_dict)'''
 
 
 class EducationalAPIView(CreateAPIView):
