@@ -155,7 +155,7 @@ class AchievementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Achievement
         fields = ('year_a', 'org_a', 'detail_a',
-                  'year_s', 'org_s', 'detail_s')
+                  'year_s', 'org_s', 'detail_s', 'user')
 
 
 class ExtraCurricularSerializer(serializers.ModelSerializer):
