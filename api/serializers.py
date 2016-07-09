@@ -112,7 +112,7 @@ class SkillsSerializer(serializers.ModelSerializer):
 class IntrestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Intrest
-        fields = ('intrest', 'user' )
+        fields = ('intrest', 'user')
 
 
 class CertificationSerializer(serializers.ModelSerializer):
@@ -134,7 +134,7 @@ class PatentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patent
         fields = ('year_patent', 'detail_patent', 'status_patent', 'patent_no',
-                  'year_article', 'journel_article', 'detail_article')
+                  'year_article', 'journel_article', 'detail_article', 'user')
 
 
 class BooksSerializer(serializers.ModelSerializer):
