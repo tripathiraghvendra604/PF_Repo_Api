@@ -431,7 +431,9 @@ class BookAPIView(CreateAPIView):
         })
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        user = serializer.validated_data['user']
+        user = get_object_or_404(User, username=user)
+        serializer.save(user=user)
 
 
 class ConferenceAPIView(CreateAPIView):
