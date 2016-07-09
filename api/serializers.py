@@ -119,7 +119,7 @@ class CertificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Certification
         fields = ('year_online', 'agency_online', 'detail_online',
-                  'year_offline', 'agency_offline', 'detail_offline')
+                  'year_offline', 'agency_offline', 'detail_offline', 'user')
 
 
 class PublicationSerializer(serializers.ModelSerializer):
