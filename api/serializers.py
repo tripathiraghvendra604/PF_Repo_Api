@@ -168,7 +168,7 @@ class ExtraCurricularSerializer(serializers.ModelSerializer):
 class SocialMediaLinksSerializer(serializers.ModelSerializer):
     class Meta:
         model = SocialMediaLinks
-        fields = ('links', )
+        fields = ('links', 'user')
 
 
 class CsrfSerializer(serializers.Serializer):
