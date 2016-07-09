@@ -17,7 +17,7 @@ from .serializers import (UserSerializer,
                           PatentSerializer,
                           BooksSerializer,
                           ConferenceSerializer,
-                          AchievementSerializer, UserLogoutSerializer,
+                          AchievementSerializer, UserLogoutSerializer, PasswordResetSerializer,
                           ExtraCurricularSerializer, SocialMediaLinksSerializer)
 
 
@@ -153,14 +153,49 @@ class LogoutView(views.APIView):
         })
 
     def post(self, request, *args, **kwargs):
-        '''print request.user, request.session['member_id']
-        logout(request)
-        return Response({'message': 'Logged Out!'}, status=status.HTTP_200_OK)'''
         data_dict = request.data
         exist_user = data_dict['user']
         user = User.objects.get(username=exist_user)
         [s.delete() for s in Session.objects.all() if str(s.get_decoded().get('_auth_user_id')) == str(user.id)]
         return Response({'message': 'Logged Out!'}, status=status.HTTP_200_OK)
+
+
+class PasswordResetView(views.APIView):
+    queryset = User.objects.all()
+    serializer_class = PasswordResetSerializer
+
+    def get_or_create_csrf_token(self, request):
+        token = request.META.get('CSRF_COOKIE', None)
+        if token is None:
+            token = csrf._get_new_csrf_key()
+            request.META['CSRF_COOKIE'] = token
+        request.META['CSRF_COOKIE_USED'] = True
+        return token
+
+    def get(self, request, *args, **kwargs):
+        serializer_class = CsrfSerializer
+        csrf = self.get_or_create_csrf_token(request)
+        csrf = csrf.decode('unicode-escape')
+        print csrf
+        return Response({
+            'csrf': csrf,
+
+        })
+
+    def post(self, request, *args, **kwargs):
+        data_dict = request.data
+        exist_user = data_dict['user']
+        old_password = data_dict['old_password']
+        password1 = data_dict['password1']
+        password2 = data_dict['password2']
+        user = User.objects.get(username=exist_user)
+
+        auth_user = authenticate(username= user.username, password=old_password)
+        if auth_user is not None:
+            if password1 == password2:
+                auth_user.set_password(password1)
+                auth_user.save()
+                return Response({'message': "Password Successfully Reset"})
 
 
 class UserInfoAPIView(CreateAPIView):
@@ -235,10 +270,25 @@ class EducationalAPIView(CreateAPIView):
 
         })
 
-    def perform_create(self, serializer):
-        user = serializer.validated_data['user']
+    def post(self, request, *args, **kwargs):
+        data_dict = (request.data)
+        print data_dict
+        user = data_dict['user']
+        print user
         user = get_object_or_404(User, username=user)
-        serializer.save(user=user)
+        year = data_dict['year']
+        agreegate = data_dict['agreegate']
+        institution = data_dict['institution']
+        degree = data_dict['degree']
+        info = EducationInfo(
+            user=user,
+            year=year,
+            agreegate=agreegate,
+            institution=institution,
+            degree=degree
+        )
+        info.save()
+        return Response({"message": "Data Saved"})
 
 
 class WorkExperienceAPIView(CreateAPIView):
