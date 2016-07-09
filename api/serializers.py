@@ -112,7 +112,7 @@ class SkillsSerializer(serializers.ModelSerializer):
 class IntrestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Intrest
-        fields = ('intrest', )
+        fields = ('intrest', 'user' )
 
 
 class CertificationSerializer(serializers.ModelSerializer):
