@@ -106,7 +106,7 @@ class WorkExperienceSerializer(serializers.ModelSerializer):
 class SkillsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Skills
-        fields = ('technical', 'soft', 'other')
+        fields = ('technical', 'soft', 'other', 'user')
 
 
 class IntrestSerializer(serializers.ModelSerializer):
