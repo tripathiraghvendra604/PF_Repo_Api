@@ -90,7 +90,7 @@ class UserInfoSerializer(serializers.ModelSerializer):
 class EducationInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = EducationInfo
-        fields = ('year', 'degree', 'agreegate')
+        fields = ('year', 'degree', 'agreegate', 'user')
 
 
 class WorkExperienceSerializer(serializers.ModelSerializer):
@@ -100,7 +100,7 @@ class WorkExperienceSerializer(serializers.ModelSerializer):
                   'from_job', 'to_job', 'company_job', 'title_job',
                   'from_freelancer', 'to_freelancer', 'client_freelancer', 'project_freelancer',
                   'status_freelancer',
-                  'from_self', 'to_self', 'project_self', 'status_self')
+                  'from_self', 'to_self', 'project_self', 'status_self', 'user')
 
 
 class SkillsSerializer(serializers.ModelSerializer):
@@ -183,3 +183,11 @@ class UserLoginSerializer(serializers.Serializer):
 class UserLogoutSerializer(serializers.Serializer):
     csrf = serializers.CharField()
     user = serializers.CharField()
+
+
+class PasswordResetSerializer(serializers.Serializer):
+    csrf = serializers.CharField()
+    user = serializers.CharField()
+    old_password = serializers.CharField()
+    password1 = serializers.CharField()
+    password2 = serializers.CharField()
