@@ -102,17 +102,12 @@ class Certification(models.Model):
 class Publication(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
-    # for national
-    year_national = models.TextField(null=True, blank=True)
-    journal_national = models.TextField(null=True, blank=True)
-    detail_national = models.TextField(null=True, blank=True)
-    status_national = models.TextField(null=True, blank=True)
-
-    # for international
-    year_international = models.TextField(null=True, blank=True)
-    journal_international = models.TextField(null=True, blank=True)
-    detail_international = models.TextField(null=True, blank=True)
-    status_international = models.TextField(null=True, blank=True)
+    # for national and international both
+    year = models.TextField(null=True, blank=True)
+    journal = models.TextField(null=True, blank=True)
+    details = models.TextField(null=True, blank=True)
+    status = models.TextField(null=True, blank=True)
+    level = models.TextField()
 
     def __unicode__(self):
         return self.user.username
