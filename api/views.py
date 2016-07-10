@@ -130,7 +130,6 @@ class LoginView(views.APIView):
 
 
 class LogoutView(views.APIView):
-    permission_classes = (permissions.IsAuthenticated, )
     serializer_class = UserLogoutSerializer
     print 'logout url'
 
