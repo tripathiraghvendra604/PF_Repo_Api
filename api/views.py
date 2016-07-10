@@ -698,10 +698,28 @@ class ExtraCurricularAPIView(CreateAPIView):
 
         })
 
-    def perform_create(self, serializer):
-        user = serializer.validated_data['user']
+    def post(self, request, *args, **kwargs):
+        data_dict = request.data
+        user = data_dict['user']
         user = get_object_or_404(User, username=user)
-        serializer.save(user=user)
+        year_e = data_dict['year_e']
+        org_e = data_dict['org_e']
+        details_e = data_dict['details_e']
+        year_v = data_dict['year_v']
+        org_v = data_dict['org_v']
+        details_v = data_dict['details_v']
+
+        info = Extracurricular(
+            user=user,
+            year_e=year_e,
+            org_e=org_e,
+            details_e=details_e,
+            year_v=year_v,
+            org_v=org_v,
+            details_v=details_v,
+        )
+        info.save()
+        return Response({"message": "Data Saved"})
 
 
 class SocialMediaLinksAPIView(CreateAPIView):
