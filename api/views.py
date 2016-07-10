@@ -546,22 +546,17 @@ class PatentAPIView(CreateAPIView):
         data_dict = request.data
         user = data_dict['user']
         user = get_object_or_404(User, username=user)
-        year_patent = data_dict['year_patent']
-        detail_patent = data_dict['detail_patent']
-        status_patent = data_dict['status_patent']
+        year = data_dict['year']
+        details = data_dict['details']
+        status = data_dict['status']
         patent_no = data_dict['patent_no']
-        year_article = data_dict['year_article']
-        journel_article = data_dict['journel_article']
-        detail_article = data_dict['detail_article']
+
         info = Patent(
             user=user,
-            year_patent=year_patent,
-            detail_patent=detail_patent,
-            status_patent=status_patent,
+            year=year,
+            details=details,
+            status=status,
             patent_no=patent_no,
-            year_article=year_article,
-            journel_article=journel_article,
-            detail_article=detail_article,
         )
         info.save()
         return Response({"message": "Data Saved"})
