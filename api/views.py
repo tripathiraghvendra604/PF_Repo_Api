@@ -465,7 +465,7 @@ class CertificationAPIView(CreateAPIView):
         year = data_dict['year']
         agency = data_dict['agency']
         details = data_dict['details']
-        mode = data_dict['year_offline']
+        mode = data_dict['mode']
         info = Certification(
             user=user,
             year=year,
