@@ -503,24 +503,18 @@ class PublicationAPIView(CreateAPIView):
         data_dict = (request.data)
         user = data_dict['user']
         user = get_object_or_404(User, username=user)
-        year_national = data_dict['year_national']
-        journal_national = data_dict['journal_national']
-        detail_national = data_dict['detail_national']
-        status_national = data_dict['status_national']
-        year_international = data_dict['year_international']
-        journal_international = data_dict['journal_international']
-        detail_international = data_dict['detail_international']
-        status_international = data_dict['status_international']
+        year = data_dict['year']
+        journal = data_dict['journal']
+        details = data_dict['details']
+        status = data_dict['status']
+        level = data_dict['level']
         info = Publication(
             user=user,
-            year_national=year_national,
-            journal_national=journal_national,
-            detail_national=detail_national,
-            status_national=status_national,
-            year_international=year_international,
-            journal_international=journal_international,
-            detail_international=detail_international,
-            status_international=status_international,
+            year=year,
+            journal=journal,
+            status=status,
+            details=details,
+            level=level,
         )
         info.save()
         return Response({"message": "Data Saved"})
