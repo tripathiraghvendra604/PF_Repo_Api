@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework import permissions, viewsets, status, views
 from .models import (User, UserInfo, EducationInfo, WorkExperience, Intrest,
-                     Skills, Certification, Publication, Patent, Books,
+                     Skills, Certification, Publication, Patent, Books, Article,
                      Conference, Achievement, Extracurricular, SocialMediaLinks)
 from .permissions import IsAccountOwner
 from .serializers import (UserSerializer,
@@ -15,7 +15,7 @@ from .serializers import (UserSerializer,
                           CertificationSerializer,
                           PublicationSerializer,
                           PatentSerializer,
-                          BooksSerializer,
+                          BooksSerializer, ArticleSerializer,
                           ConferenceSerializer,
                           AchievementSerializer, UserLogoutSerializer, PasswordResetSerializer,
                           ExtraCurricularSerializer, SocialMediaLinksSerializer)
@@ -557,6 +557,50 @@ class PatentAPIView(CreateAPIView):
             details=details,
             status=status,
             patent_no=patent_no,
+        )
+        info.save()
+        return Response({"message": "Data Saved"})
+
+
+class ArticleAPIView(CreateAPIView):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+
+    def get_or_create_csrf_token(self, request):
+        token = request.META.get('CSRF_COOKIE', None)
+        if token is None:
+            token = csrf._get_new_csrf_key()
+            request.META['CSRF_COOKIE'] = token
+        request.META['CSRF_COOKIE_USED'] = True
+        return token
+
+    def get(self, request, *args, **kwargs):
+        serializer_class = CsrfSerializer
+        csrf = self.get_or_create_csrf_token(request)
+        csrf = csrf.decode('unicode-escape')
+        print csrf
+        return Response({
+            'csrf': csrf,
+
+        })
+
+    def post(self, request, *args, **kwargs):
+        data_dict = request.data
+        user = data_dict['user']
+        user = get_object_or_404(User, username=user)
+        year = data_dict['year']
+        details = data_dict['details']
+        publisher = data_dict['publisher']
+        title = data_dict['title']
+        links = data_dict['links']
+
+        info = Article(
+            user=user,
+            year=year,
+            details=details,
+            publisher=publisher,
+            title=title,
+            links=links,
         )
         info.save()
         return Response({"message": "Data Saved"})

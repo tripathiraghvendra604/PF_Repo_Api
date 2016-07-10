@@ -21,7 +21,7 @@ from api.views import (UserViewSet,
                        EducationalAPIView,
                        LoginView, LogoutView, PasswordResetView,
                        WorkExperienceAPIView, IntrestAPIView,
-                       SkillsAPIView, CertificationAPIView, PublicationAPIView,
+                       SkillsAPIView, CertificationAPIView, PublicationAPIView, ArticleAPIView,
                        PatentAPIView, BookAPIView, ConferenceAPIView, AchievementAPIView,
                        ExtraCurricularAPIView, SocialMediaLinksAPIView)
 from django.conf import settings
@@ -43,6 +43,7 @@ urlpatterns = [
     url(r'^certification/', CertificationAPIView.as_view(), name='certification'),
     url(r'^publication/', PublicationAPIView.as_view(), name='publication'),
     url(r'^patent/', PatentAPIView.as_view(), name='patent'),
+    url(r'^article/$', ArticleAPIView.as_view(), name='article'),
     url(r'^book/', BookAPIView.as_view(), name='book'),
     url(r'^conference/', ConferenceAPIView.as_view(), name='conference'),
     url(r'^achievement/', AchievementAPIView.as_view(), name='achievement'),
