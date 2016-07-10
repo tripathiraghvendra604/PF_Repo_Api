@@ -416,11 +416,27 @@ class CertificationAPIView(CreateAPIView):
 
         })
 
-    def perform_create(self, serializer):
-        user = serializer.validated_data['user']
+    def post(self, request, *args, **kwargs):
+        data_dict = (request.data)
+        user = data_dict['user']
         user = get_object_or_404(User, username=user)
-        serializer.save(user=user)
-
+        year_online = data_dict['year_online']
+        agency_online = data_dict['agency_online']
+        detail_online = data_dict['detail_online']
+        year_offline = data_dict['year_offline']
+        agency_offline = data_dict['agency_offline']
+        detail_offline = data_dict['detail_offline']
+        info = Certification(
+            user=user,
+            year_online=year_online,
+            agency_online=agency_online,
+            detail_online=detail_online,
+            year_offline=year_offline,
+            agency_offline=agency_offline,
+            detail_offline=detail_offline,
+        )
+        info.save()
+        return Response({"message": "Data Saved"})
 
 class PublicationAPIView(CreateAPIView):
     queryset = Publication.objects.all()
