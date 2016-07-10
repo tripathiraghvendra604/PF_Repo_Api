@@ -117,15 +117,10 @@ class Patent(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
     # for patents
-    year_patent = models.TextField(null=True, blank=True)
-    detail_patent = models.TextField(null=True, blank=True)
-    status_patent = models.TextField(null=True, blank=True)
+    year = models.TextField(null=True, blank=True)
+    details = models.TextField(null=True, blank=True)
+    status = models.TextField(null=True, blank=True)
     patent_no = models.TextField(null=True, blank=True)
-
-    # for articles
-    year_article = models.TextField(null=True, blank=True)
-    journel_article = models.TextField(null=True, blank=True)
-    detail_article = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
         return self.user.username
