@@ -130,15 +130,12 @@ class Books(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
     # for books
-    year_book = models.TextField(null=True, blank=True)
-    publisher_book = models.TextField(null=True, blank=True)
-    detail_book = models.TextField(null=True, blank=True)
-    isbn_book = models.TextField(null=True, blank=True)
-
-    # for poster
-    year_poster = models.TextField(null=True, blank=True)
-    org_poster = models.TextField(null=True, blank=True)
-    detail_poster = models.TextField(null=True, blank=True)
+    year = models.TextField(null=True, blank=True)
+    title = models.TextField(null=True, blank=True)
+    publisher = models.TextField(null=True, blank=True)
+    detail = models.TextField(null=True, blank=True)
+    isbn = models.TextField(null=True, blank=True)
+    links = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
         return self.user.username
