@@ -556,10 +556,29 @@ class BookAPIView(CreateAPIView):
 
         })
 
-    def perform_create(self, serializer):
-        user = serializer.validated_data['user']
+    def post(self, request, *args, **kwargs):
+        data_dict = request.data
+        user = data_dict['user']
         user = get_object_or_404(User, username=user)
-        serializer.save(user=user)
+        year_book = data_dict['year_book']
+        publisher_book = data_dict['publisher_book']
+        detail_book = data_dict['detail_book']
+        isbn_book = data_dict['isbn_book']
+        year_poster = data_dict['year_poster']
+        org_poster = data_dict['org_poster']
+        detail_poster = data_dict['detail_poster']
+        info = Books(
+            user=user,
+            year_book=year_book,
+            publisher_book=publisher_book,
+            detail_book=detail_book,
+            isbn_book=isbn_book,
+            year_poster=year_poster,
+            org_poster=org_poster,
+            detail_poster=detail_poster,
+        )
+        info.save()
+        return Response({"message": "Data Saved"})
 
 
 class ConferenceAPIView(CreateAPIView):
