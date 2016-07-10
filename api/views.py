@@ -438,6 +438,7 @@ class CertificationAPIView(CreateAPIView):
         info.save()
         return Response({"message": "Data Saved"})
 
+
 class PublicationAPIView(CreateAPIView):
     queryset = Publication.objects.all()
     serializer_class = PublicationSerializer
@@ -460,10 +461,31 @@ class PublicationAPIView(CreateAPIView):
 
         })
 
-    def perform_create(self, serializer):
-        user = serializer.validated_data['user']
+    def post(self, request, *args, **kwargs):
+        data_dict = (request.data)
+        user = data_dict['user']
         user = get_object_or_404(User, username=user)
-        serializer.save(user=user)
+        year_national = data_dict['year_national']
+        journal_national = data_dict['journal_national']
+        detail_national = data_dict['detail_national']
+        status_national = data_dict['status_national']
+        year_international = data_dict['year_international']
+        journal_international = data_dict['journal_international']
+        detail_international = data_dict['detail_international']
+        status_international = data_dict['status_international']
+        info = Publication(
+            user=user,
+            year_national=year_national,
+            journal_national=journal_national,
+            detail_national=detail_national,
+            status_national=status_national,
+            year_international=year_international,
+            journal_international=journal_international,
+            detail_international=detail_international,
+            status_international=status_international,
+        )
+        info.save()
+        return Response({"message": "Data Saved"})
 
 
 class PatentAPIView(CreateAPIView):
