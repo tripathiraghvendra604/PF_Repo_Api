@@ -313,10 +313,52 @@ class WorkExperienceAPIView(CreateAPIView):
 
         })
 
-    def perform_create(self, serializer):
-        user = serializer.validated_data['user']
+    def post(self, request, *args, **kwargs):
+        data_dict = request.data
+        user = data_dict['user']
         user = get_object_or_404(User, username=user)
-        serializer.save(user=user)
+        from_intern = data_dict['from_intern']
+        to_intern = data_dict['to_intern']
+        company_intern = data_dict['company_intern']
+        title_intern = data_dict['title_intern']
+        status_intern = data_dict['status_intern']
+        from_job = data_dict['from_job']
+        to_job = data_dict['to_job']
+        company_job = data_dict['company_job']
+        title_job = data_dict['title_job']
+        from_freelancer = data_dict['from_freelancer']
+        to_freelancer = data_dict['to_freelancer']
+        client_freelancer = data_dict['client_freelancer']
+        project_freelancer = data_dict['project_freelancer']
+        status_freelancer = data_dict['status_freelancer']
+        from_self = data_dict['from_self']
+        to_self = data_dict['to_self']
+        project_self = data_dict['project_self']
+        status_self = data_dict['status_self']
+
+        info = WorkExperience(
+            user=user,
+            from_intern=from_intern,
+            to_intern=to_intern,
+            company_intern=company_intern,
+            title_intern=title_intern,
+            status_intern=status_intern,
+            from_job=from_job,
+            to_job=to_job,
+            company_job=company_job,
+            title_job=title_job,
+            from_freelancer=from_freelancer,
+            to_freelancer=to_freelancer,
+            client_freelancer=client_freelancer,
+            project_freelancer=project_freelancer,
+            status_freelancer=status_freelancer,
+            from_self=from_self,
+            to_self=to_self,
+            project_self=project_self,
+            status_self=status_self,
+        )
+        info.save()
+        return Response({"message": "Data Saved"})
 
 
 class IntrestAPIView(CreateAPIView):
