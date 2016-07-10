@@ -139,8 +139,8 @@ class PatentSerializer(serializers.ModelSerializer):
 class BooksSerializer(serializers.ModelSerializer):
     class Meta:
         model = Books
-        fields = ('year_book', 'publisher_book', 'detail_book', 'isbn_book',
-                  'year_poster', 'org_poster', 'detail_poster', 'user')
+        fields = ('year', 'publisher', 'detail', 'isbn', 'links', 'title',
+                  'user')
 
 
 class ArticleSerializer(serializers.ModelSerializer):
