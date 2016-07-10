@@ -118,8 +118,8 @@ class IntrestSerializer(serializers.ModelSerializer):
 class CertificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Certification
-        fields = ('year_online', 'agency_online', 'detail_online',
-                  'year_offline', 'agency_offline', 'detail_offline', 'user')
+        fields = ('year', 'agency', 'details',
+                  'mode', 'user')
 
 
 class PublicationSerializer(serializers.ModelSerializer):
