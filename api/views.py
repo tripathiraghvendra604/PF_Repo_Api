@@ -462,20 +462,16 @@ class CertificationAPIView(CreateAPIView):
         data_dict = (request.data)
         user = data_dict['user']
         user = get_object_or_404(User, username=user)
-        year_online = data_dict['year_online']
-        agency_online = data_dict['agency_online']
-        detail_online = data_dict['detail_online']
-        year_offline = data_dict['year_offline']
-        agency_offline = data_dict['agency_offline']
-        detail_offline = data_dict['detail_offline']
+        year = data_dict['year']
+        agency = data_dict['agency']
+        details = data_dict['details']
+        mode = data_dict['year_offline']
         info = Certification(
             user=user,
-            year_online=year_online,
-            agency_online=agency_online,
-            detail_online=detail_online,
-            year_offline=year_offline,
-            agency_offline=agency_offline,
-            detail_offline=detail_offline,
+            year=year,
+            agency=agency,
+            details=details,
+            mode=mode,
         )
         info.save()
         return Response({"message": "Data Saved"})
