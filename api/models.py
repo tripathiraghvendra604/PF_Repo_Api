@@ -89,14 +89,11 @@ class Skills(models.Model):
 class Certification(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
-    #for online
-    year_online = models.TextField(null=True, blank=True)
-    agency_online = models.TextField(null=True, blank=True)
-    detail_online = models.TextField(null=True, blank=True)
-    #for offline
-    year_offline = models.TextField(null=True, blank=True)
-    agency_offline = models.TextField(null=True, blank=True)
-    detail_offline = models.TextField(null=True, blank=True)
+    #for online and offline both
+    year = models.TextField(null=True, blank=True)
+    agency = models.TextField(null=True, blank=True)
+    details = models.TextField(null=True, blank=True)
+    mode = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
         return self.user.username
