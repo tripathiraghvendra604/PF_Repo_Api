@@ -603,10 +603,31 @@ class ConferenceAPIView(CreateAPIView):
 
         })
 
-    def perform_create(self, serializer):
-        user = serializer.validated_data['user']
+    def post(self, request, *args, **kwargs):
+        data_dict = request.data
+        user = data_dict['user']
         user = get_object_or_404(User, username=user)
-        serializer.save(user=user)
+        year_c = data_dict['year_c']
+        org_c = data_dict['org_c']
+        detail_c = data_dict['detail_c']
+        status_c = data_dict['status_c']
+        year_i = data_dict['year_i']
+        org_i = data_dict['org_i']
+        detail_i = data_dict['detail_i']
+        status_i = data_dict['status_i']
+        info = Conference(
+            user=user,
+            year_c=year_c,
+            org_c=org_c,
+            detail_c=detail_c,
+            status_c=status_c,
+            year_i=year_i,
+            org_i=org_i,
+            detail_i=detail_i,
+            status_i=status_i,
+        )
+        info.save()
+        return Response({"message": "Data Saved"})
 
 
 class AchievementAPIView(CreateAPIView):
