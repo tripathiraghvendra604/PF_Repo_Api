@@ -144,6 +144,15 @@ class Books(models.Model):
         return self.user.username
 
 
+class Article(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    year = models.TextField(null=True, blank=True)
+    details = models.TextField(null=True, blank=True)
+    publisher = models.TextField(null=True, blank=True)
+    title = models.TextField(null=True, blank=True)
+    links = models.TextField(null=True, blank=True)
+
+
 class Conference(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
