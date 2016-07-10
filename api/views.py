@@ -652,10 +652,28 @@ class AchievementAPIView(CreateAPIView):
 
         })
 
-    def perform_create(self, serializer):
-        user = serializer.validated_data['user']
+    def post(self, request, *args, **kwargs):
+        data_dict = request.data
+        user = data_dict['user']
         user = get_object_or_404(User, username=user)
-        serializer.save(user=user)
+        year_a = data_dict['year_a']
+        org_a = data_dict['org_a']
+        detail_a = data_dict['detail_a']
+        year_s = data_dict['year_s']
+        org_s = data_dict['org_s']
+        detail_s = data_dict['detail_s']
+
+        info = Achievement(
+            user=user,
+            year_a=year_a,
+            org_a=org_a,
+            detail_a=detail_a,
+            year_s=year_s,
+            org_s=org_s,
+            detail_s=detail_s,
+        )
+        info.save()
+        return Response({"message": "Data Saved"})
 
 
 class ExtraCurricularAPIView(CreateAPIView):
