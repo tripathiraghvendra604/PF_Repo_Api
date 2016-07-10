@@ -510,10 +510,29 @@ class PatentAPIView(CreateAPIView):
 
         })
 
-    def perform_create(self, serializer):
-        user = serializer.validated_data['user']
+    def post(self, request, *args, **kwargs):
+        data_dict = request.data
+        user = data_dict['user']
         user = get_object_or_404(User, username=user)
-        serializer.save(user=user)
+        year_patent = data_dict['year_patent']
+        detail_patent = data_dict['detail_patent']
+        status_patent = data_dict['status_patent']
+        patent_no = data_dict['patent_no']
+        year_article = data_dict['year_article']
+        journel_article = data_dict['journel_article']
+        detail_article = data_dict['detail_article']
+        info = Patent(
+            user=user,
+            year_patent=year_patent,
+            detail_patent=detail_patent,
+            status_patent=status_patent,
+            patent_no=patent_no,
+            year_article=year_article,
+            journel_article=journel_article,
+            detail_article=detail_article,
+        )
+        info.save()
+        return Response({"message": "Data Saved"})
 
 
 class BookAPIView(CreateAPIView):
