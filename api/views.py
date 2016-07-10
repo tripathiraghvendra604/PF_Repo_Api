@@ -341,10 +341,18 @@ class IntrestAPIView(CreateAPIView):
 
         })
 
-    def perform_create(self, serializer):
-        user = serializer.validated_data['user']
+    def post(self, request, *args, **kwargs):
+        data_dict = (request.data)
+        print data_dict
+        user = data_dict['user']
         user = get_object_or_404(User, username=user)
-        serializer.save(user=user)
+        intrest = data_dict['intrest']
+        info = EducationInfo(
+            user=user,
+            intrest=intrest,
+        )
+        info.save()
+        return Response({"message": "Data Saved"})
 
 
 class SkillsAPIView(CreateAPIView):

@@ -126,7 +126,8 @@ class PublicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Publication
         fields = ('year_national', 'journal_national', 'detail_national', 'status_national',
-                  'year_international', 'journal_international', 'detail_international', 'status_international',
+                  'year_international', 'journal_international',
+                  'detail_international', 'status_international',
                   'user')
 
 
