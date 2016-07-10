@@ -744,7 +744,15 @@ class SocialMediaLinksAPIView(CreateAPIView):
 
         })
 
-    def perform_create(self, serializer):
-        user = serializer.validated_data['user']
+    def post(self, request, *args, **kwargs):
+        data_dict = request.data
+        user = data_dict['user']
         user = get_object_or_404(User, username=user)
-        serializer.save(user=user)
+        links = data_dict['links']
+
+        info = SocialMediaLinks(
+            user=user,
+            links=links,
+        )
+        info.save()
+        return Response({"message": "Data Saved"})
