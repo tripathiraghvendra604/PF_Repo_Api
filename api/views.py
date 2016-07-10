@@ -131,7 +131,6 @@ class LoginView(views.APIView):
 
 class LogoutView(views.APIView):
     serializer_class = UserLogoutSerializer
-    print 'logout url'
 
     def get_or_create_csrf_token(self, request):
         token = request.META.get('CSRF_COOKIE', None)
@@ -630,23 +629,22 @@ class BookAPIView(CreateAPIView):
         data_dict = request.data
         user = data_dict['user']
         user = get_object_or_404(User, username=user)
-        year_book = data_dict['year_book']
-        publisher_book = data_dict['publisher_book']
-        detail_book = data_dict['detail_book']
-        isbn_book = data_dict['isbn_book']
-        year_poster = data_dict['year_poster']
-        org_poster = data_dict['org_poster']
-        detail_poster = data_dict['detail_poster']
+        year = data_dict['year']
+        title = data_dict['title']
+        publisher = data_dict['publisher']
+        detail = data_dict['detail']
+        isbn = data_dict['isbn']
+        links = data_dict['links']
+
         info = Books(
             user=user,
-            year_book=year_book,
-            publisher_book=publisher_book,
-            detail_book=detail_book,
-            isbn_book=isbn_book,
-            year_poster=year_poster,
-            org_poster=org_poster,
-            detail_poster=detail_poster,
-        )
+            year=year,
+            publisher=publisher,
+            detail=detail,
+            isbn=isbn,
+            links=links,
+            title=title
+            )
         info.save()
         return Response({"message": "Data Saved"})
 
