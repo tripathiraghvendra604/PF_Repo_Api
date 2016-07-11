@@ -673,14 +673,14 @@ class PosterkAPIView(CreateAPIView):
         title = data_dict['title']
         org = data_dict['org']
         detail = data_dict['detail']
-        links = data_dict['links']
+        link = data_dict['link']
 
         info = Books(
             user=user,
             year=year,
             org=org,
             detail=detail,
-            links=links,
+            link=link,
             title=title
             )
         info.save()
