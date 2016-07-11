@@ -170,12 +170,14 @@ class Conference(models.Model):
     org_c = models.TextField(null=True, blank=True)
     detail_c = models.TextField(null=True, blank=True)
     status_c = models.TextField(null=True, blank=True)
+    title_c = models.TextField(null=True, blank=True)
 
     # for invited talks/lectures
     year_i = models.TextField(null=True, blank=True)
     org_i = models.TextField(null=True, blank=True)
     detail_i = models.TextField(null=True, blank=True)
     status_i = models.TextField(null=True, blank=True)
+    title_i = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
         return self.user.username
