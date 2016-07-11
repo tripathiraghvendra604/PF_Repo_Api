@@ -687,7 +687,6 @@ class PosterkAPIView(CreateAPIView):
         return Response({"message": "Data Saved"})
 
 
-
 class ConferenceAPIView(CreateAPIView):
     queryset = Conference.objects.all()
     serializer_class = ConferenceSerializer
@@ -718,20 +717,24 @@ class ConferenceAPIView(CreateAPIView):
         org_c = data_dict['org_c']
         detail_c = data_dict['detail_c']
         status_c = data_dict['status_c']
+        title_c = data_dict['title_c']
         year_i = data_dict['year_i']
         org_i = data_dict['org_i']
         detail_i = data_dict['detail_i']
         status_i = data_dict['status_i']
+        title_i = data_dict['title_i']
         info = Conference(
             user=user,
             year_c=year_c,
             org_c=org_c,
             detail_c=detail_c,
             status_c=status_c,
+            title_c=title_c,
             year_i=year_i,
             org_i=org_i,
             detail_i=detail_i,
             status_i=status_i,
+            title_i=title_i,
         )
         info.save()
         return Response({"message": "Data Saved"})
