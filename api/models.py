@@ -141,6 +141,18 @@ class Books(models.Model):
         return self.user.username
 
 
+class Poster(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    year = models.TextField(null=True, blank=True)
+    title = models.TextField(null=True, blank=True)
+    org = models.TextField(null=True, blank=True)
+    detail = models.TextField(null=True, blank=True)
+    link = models.TextField(null=True, blank=True)
+
+    def __unicode__(self):
+        return self.user.username
+
+
 class Article(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     year = models.TextField(null=True, blank=True)
