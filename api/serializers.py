@@ -158,8 +158,8 @@ class ArticleSerializer(serializers.ModelSerializer):
 class ConferenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Conference
-        fields = ('year_c', 'org_c', 'detail_c', 'status_c',
-                  'year_i', 'org_i', 'detail_i', 'status_i', 'user')
+        fields = ('year_c', 'org_c', 'detail_c', 'status_c', 'title_c'
+                  'year_i', 'org_i', 'detail_i', 'status_i', 'title_i', 'user')
 
 
 class AchievementSerializer(serializers.ModelSerializer):
