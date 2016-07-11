@@ -2,8 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from rest_framework import permissions, viewsets, status, views
 from .models import (User, UserInfo, EducationInfo, WorkExperience, Intrest,
                      Skills, Certification, Publication, Patent, Books, Article,
-                     Conference, Achievement, Extracurricular, SocialMediaLinks)
-from .permissions import IsAccountOwner
+                     Conference, Achievement, Extracurricular, SocialMediaLinks,
+                     Poster)
 from .serializers import (UserSerializer,
                           UserInfoSerializer,
                           EducationInfoSerializer,
@@ -15,7 +15,7 @@ from .serializers import (UserSerializer,
                           CertificationSerializer,
                           PublicationSerializer,
                           PatentSerializer,
-                          BooksSerializer, ArticleSerializer,
+                          BooksSerializer, ArticleSerializer, PosterSerializer,
                           ConferenceSerializer,
                           AchievementSerializer, UserLogoutSerializer, PasswordResetSerializer,
                           ExtraCurricularSerializer, SocialMediaLinksSerializer)
@@ -177,7 +177,6 @@ class PasswordResetView(views.APIView):
         print csrf
         return Response({
             'csrf': csrf,
-
         })
 
     def post(self, request, *args, **kwargs):
@@ -537,7 +536,6 @@ class PatentAPIView(CreateAPIView):
         print csrf
         return Response({
             'csrf': csrf,
-
         })
 
     def post(self, request, *args, **kwargs):
@@ -579,7 +577,6 @@ class ArticleAPIView(CreateAPIView):
         print csrf
         return Response({
             'csrf': csrf,
-
         })
 
     def post(self, request, *args, **kwargs):
@@ -622,7 +619,6 @@ class BookAPIView(CreateAPIView):
         csrf = csrf.decode('unicode-escape')
         return Response({
             'csrf': csrf,
-
         })
 
     def post(self, request, *args, **kwargs):
@@ -647,6 +643,49 @@ class BookAPIView(CreateAPIView):
             )
         info.save()
         return Response({"message": "Data Saved"})
+
+
+class PosterkAPIView(CreateAPIView):
+    queryset = Poster.objects.all()
+    serializer_class = PosterSerializer
+
+    def get_or_create_csrf_token(self, request):
+        token = request.META.get('CSRF_COOKIE', None)
+        if token is None:
+            token = csrf._get_new_csrf_key()
+            request.META['CSRF_COOKIE'] = token
+        request.META['CSRF_COOKIE_USED'] = True
+        return token
+
+    def get(self, request, *args, **kwargs):
+        serializer_class = CsrfSerializer
+        csrf = self.get_or_create_csrf_token(request)
+        csrf = csrf.decode('unicode-escape')
+        return Response({
+            'csrf': csrf,
+        })
+
+    def post(self, request, *args, **kwargs):
+        data_dict = request.data
+        user = data_dict['user']
+        user = get_object_or_404(User, username=user)
+        year = data_dict['year']
+        title = data_dict['title']
+        org = data_dict['org']
+        detail = data_dict['detail']
+        links = data_dict['links']
+
+        info = Books(
+            user=user,
+            year=year,
+            org=org,
+            detail=detail,
+            links=links,
+            title=title
+            )
+        info.save()
+        return Response({"message": "Data Saved"})
+
 
 
 class ConferenceAPIView(CreateAPIView):
@@ -717,7 +756,6 @@ class AchievementAPIView(CreateAPIView):
         print csrf
         return Response({
             'csrf': csrf,
-
         })
 
     def post(self, request, *args, **kwargs):
@@ -763,7 +801,6 @@ class ExtraCurricularAPIView(CreateAPIView):
         print csrf
         return Response({
             'csrf': csrf,
-
         })
 
     def post(self, request, *args, **kwargs):
@@ -809,7 +846,6 @@ class SocialMediaLinksAPIView(CreateAPIView):
         print csrf
         return Response({
             'csrf': csrf,
-
         })
 
     def post(self, request, *args, **kwargs):
