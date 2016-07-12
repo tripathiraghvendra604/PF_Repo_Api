@@ -645,7 +645,7 @@ class BookAPIView(CreateAPIView):
         return Response({"message": "Data Saved"})
 
 
-class PosterkAPIView(CreateAPIView):
+class PosterAPIView(CreateAPIView):
     queryset = Poster.objects.all()
     serializer_class = PosterSerializer
 
@@ -675,13 +675,13 @@ class PosterkAPIView(CreateAPIView):
         detail = data_dict['detail']
         link = data_dict['link']
 
-        info = Books(
+        info = Poster(
             user=user,
             year=year,
             org=org,
             detail=detail,
             link=link,
-            title=title
+            title=title,
             )
         info.save()
         return Response({"message": "Data Saved"})
