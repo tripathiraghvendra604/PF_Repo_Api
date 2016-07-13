@@ -839,6 +839,35 @@ class ArticleAPIView(CreateAPIView):
         return Response({"message": "Data Saved"})
 
 
+class ArticleUpdateAPIView(views.APIView):
+    serializer_class = ArticleSerializer
+
+    def get(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        info = get_object_or_404(Article, user=user)
+        data = dict()
+        data['year'] = info.year
+        data['details'] = info.details
+        data['publisher'] = info.publisher
+        data['title'] = info.title
+        data['links'] = info.links
+
+        return Response(data)
+
+    def post(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        instance = get_object_or_404(Article, user=user)
+        data = request.data
+        instance.year = self.request.data['year']
+        instance.details = self.request.data['details']
+        instance.publisher = self.request.data['publisher']
+        instance.title = self.request.data['title']
+        instance.links = self.request.data['links']
+        instance.save()
+        return Response({"message": "Data Saved"})
+
+
+
 class BookAPIView(CreateAPIView):
     queryset = Books.objects.all()
     serializer_class = BooksSerializer
