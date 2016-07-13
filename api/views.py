@@ -22,7 +22,7 @@ from .serializers import (UserSerializer,
 
 
 from rest_framework.response import Response
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from django.middleware import csrf
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.sessions.models import Session
@@ -470,7 +470,6 @@ class WorkExperienceUpdateAPIView(views.APIView):
         return Response({"message": "Data Saved"})
 
 
-
 class IntrestAPIView(CreateAPIView):
     queryset = Intrest.objects.all()
     serializer_class = IntrestSerializer
@@ -525,7 +524,6 @@ class IntrestUpdateAPIView(views.APIView):
         instance.intrest = self.request.data['intrest']
         instance.save()
         return Response({"message": "Data Saved"})
-
 
 
 class SkillsAPIView(CreateAPIView):
@@ -1299,13 +1297,156 @@ class SocialMediaLinksUpdateAPIView(views.APIView):
         info = get_object_or_404(SocialMediaLinks, user=user)
         data = dict()
         data['links'] = info.links
-
         return Response(data)
 
     def post(self, request, username, *args, **kwargs):
         user = get_object_or_404(User, username=username)
         instance = get_object_or_404(SocialMediaLinks, user=user)
         instance.links = self.request.data['links']
-
         instance.save()
         return Response({"message": "Data Saved"})
+
+
+class RetrieveUserInfoApiView(views.APIView):
+
+    def get(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        data = dict()
+        info = get_object_or_404(UserInfo, user=user)
+        #for userinfo
+        data['name'] = info.name
+        data['email'] = info.email
+        data['phone'] = info.phone
+        data['dob'] = info.dob
+        try:
+            data['profilePic'] = info.profilePic.url
+        except:
+            data['profilePic'] = ''
+
+        #for education info
+        info = get_object_or_404(EducationInfo, user=user)
+        data['year'] = info.year
+        data['degree'] = info.degree
+        data['agreegate'] = info.agreegate
+        data['institution'] = info.institution
+
+        #for work experience
+        info = get_object_or_404(WorkExperience, user=user)
+        data['from_intern'] = info.from_intern
+        data['to_intern'] = info.to_intern
+        data['company_intern'] = info.company_intern
+        data['title_intern'] = info.title_intern
+        data['status_intern'] = info.status_intern
+
+        data['from_job'] = info.from_job
+        data['to_job'] = info.to_job
+        data['company_job'] = info.company_job
+        data['title_job'] = info.title_job
+
+        data['from_freelancer'] = info.from_freelancer
+        data['to_freelancer'] = info.to_freelancer
+        data['client_freelancer'] = info.client_freelancer
+        data['project_freelancer'] = info.project_freelancer
+        data['status_freelancer'] = info.status_freelancer
+
+        data['from_self'] = info.from_self
+        data['to_self'] = info.to_self
+        data['project_self'] = info.project_self
+        data['status_self'] = info.status_self
+
+        #for intrest
+        info = get_object_or_404(Intrest, user=user)
+        data['intrest'] = info.intrest
+
+        #for skills
+        info = get_object_or_404(Skills, user=user)
+        data['technical'] = info.technical
+        data['soft'] = info.soft
+        data['other'] = info.other
+
+        #for certification
+        info = get_object_or_404(Certification, user=user)
+        data['year'] = info.year
+        data['agency'] = info.agency
+        data['details'] = info.details
+        data['mode'] = info.mode
+
+        #for publication
+        info = get_object_or_404(Publication, user=user)
+        data['year'] = info.year
+        data['journal'] = info.journal
+        data['details'] = info.details
+        data['status'] = info.status
+        data['level'] = info.level
+
+        # for patent
+        info = get_object_or_404(Patent, user=user)
+        data['year'] = info.year
+        data['patent_no'] = info.patent_no
+        data['details'] = info.details
+        data['status'] = info.status
+
+        #for article
+        info = get_object_or_404(Article, user=user)
+        data['year'] = info.year
+        data['details'] = info.details
+        data['publisher'] = info.publisher
+        data['title'] = info.title
+        data['links'] = info.links
+
+        #for books
+        info = get_object_or_404(Books, user=user)
+        data['year'] = info.year
+        data['title'] = info.title
+        data['publisher'] = info.publisher
+        data['detail'] = info.detail
+        data['isbn'] = info.isbn
+        data['links'] = info.links
+
+        #for poster
+        info = get_object_or_404(Poster, user=user)
+        data['year'] = info.year
+        data['title'] = info.title
+        data['org'] = info.org
+        data['detail'] = info.detail
+        data['link'] = info.link
+
+        #for conference
+        info = get_object_or_404(Conference, user=user)
+        data['year_c'] = info.year_c
+        data['org_c'] = info.org_c
+        data['detail_c'] = info.detail_c
+        data['status_c'] = info.status_c
+        data['title_c'] = info.title_c
+
+        data['year_i'] = info.year_i
+        data['org_i'] = info.org_i
+        data['detail_i'] = info.detail_i
+        data['status_i'] = info.status_i
+        data['title_i'] = info.title_i
+
+        #for achievement
+        info = get_object_or_404(Achievement, user=user)
+        data['year_a'] = info.year_a
+        data['org_a'] = info.org_a
+        data['detail_a'] = info.detail_a
+
+        data['year_s'] = info.year_s
+        data['org_s'] = info.org_s
+        data['detail_s'] = info.detail_s
+
+        # extracurricular
+        info = get_object_or_404(Extracurricular, user=user)
+        data['year_e'] = info.year_e
+        data['org_e'] = info.org_e
+        data['details_e'] = info.details_e
+
+        data['year_v'] = info.year_v
+        data['org_v'] = info.org_v
+        data['details_v'] = info.details_v
+
+        # for social links
+        info = get_object_or_404(SocialMediaLinks, user=user)
+        data['links'] = info.links
+
+        return Response(data)

@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from api.views import (UserViewSet,
-                       UserInfoAPIView, UserUpdateViewSet,
+                       UserInfoAPIView, UserUpdateViewSet, RetrieveUserInfoApiView,
                        EducationalAPIView, EducationalUpdateAPIView, SkillsUpdateAPIView,
                        LoginView, LogoutView, PasswordResetView, IntrestUpdateAPIView,
                        WorkExperienceAPIView, WorkExperienceUpdateAPIView, IntrestAPIView, PosterAPIView,
@@ -66,6 +66,7 @@ urlpatterns = [
     url(r'^(?P<username>[\w.@+-]+)/extracurricular/', ExtraCurricularUpdateAPIView.as_view(), name='extracurricular_update'),
     url(r'^(?P<username>[\w.@+-]+)/links/', SocialMediaLinksUpdateAPIView.as_view(), name='links'),
     url(r'^links/', SocialMediaLinksAPIView.as_view(), name='links'),
+    url(r'^(?P<username>[\w.@+-]+)/info/', RetrieveUserInfoApiView.as_view(), name='info'),
 
 ]
 

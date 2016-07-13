@@ -11,34 +11,6 @@ from rest_framework.response import Response
 
 class UserSerializer(serializers.ModelSerializer):
 
-    #password = serializers.CharField(write_only=True, required=False)
-    #password2 = serializers.CharField(label='Confirm Password',write_only=True, required=False)
-    '''email = serializers.EmailField(label='Email')
-    class Meta:
-        model = User
-        fields = ('id', 'email', 'username', 'password')
-        extra_kwargs = {
-            "password" : {"write_only": True}
-        }
-
-    def validate(self, data):
-            email = data['email']
-            user_qs = User.objects.filter(email=email)
-            if user_qs.exists():
-                raise ValidationError('This User has already Registered')
-
-            return data
-
-        # def validate_password2(self, value):
-        #     data = self.get_initial()
-        #     password1 = data.get('password')
-        #     password2 = value
-        #     if password1 != password2:
-        #         raise ValidationError("Passwords don't match")
-        #     return value
-
-    def create(self, **validated_data):
-            return User.objects.create(**validated_data) '''
     class Meta:
         model = User
         fields = ('email', 'username', 'password')
@@ -68,23 +40,6 @@ class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInfo
         fields = ('name', 'email', 'phone', 'dob', 'profilePic', 'user')
-
-    '''def create(self, validated_data):
-        name= validated_data['name']
-        email = validated_data['email']
-        phone = validated_data['phone']
-        dob = validated_data['dob']
-        profilePic = validated_data['profilePic']
-
-        info = UserInfo(
-            name= name,
-            email= email,
-            phone= phone,
-            dob= dob,
-            profilePic= profilePic
-        )
-        info.save()
-        return self.data'''
 
 
 class EducationInfoSerializer(serializers.ModelSerializer):
