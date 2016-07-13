@@ -982,6 +982,34 @@ class PosterAPIView(CreateAPIView):
         return Response({"message": "Data Saved"})
 
 
+class PosterUpdateAPIView(views.APIView):
+    serializer_class = PosterSerializer
+
+    def get(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        info = get_object_or_404(Poster, user=user)
+        data = dict()
+        data['year'] = info.year
+        data['title'] = info.title
+        data['org'] = info.org
+        data['detail'] = info.detail
+        data['link'] = info.link
+
+        return Response(data)
+
+    def post(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        instance = get_object_or_404(Poster, user=user)
+        instance.year = self.request.data['year']
+        instance.title = self.request.data['title']
+        instance.org = self.request.data['org']
+        instance.detail = self.request.data['detail']
+        instance.link = self.request.data['link']
+        instance.save()
+        return Response({"message": "Data Saved"})
+
+
+
 class ConferenceAPIView(CreateAPIView):
     queryset = Conference.objects.all()
     serializer_class = ConferenceSerializer
