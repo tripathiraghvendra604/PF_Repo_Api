@@ -770,6 +770,32 @@ class PatentAPIView(CreateAPIView):
         return Response({"message": "Data Saved"})
 
 
+class PatentUpdateAPIView(views.APIView):
+    serializer_class = PatentSerializer
+
+    def get(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        info = get_object_or_404(Patent, user=user)
+        data = dict()
+        data['year'] = info.year
+        data['patent_no'] = info.patent_no
+        data['details'] = info.details
+        data['status'] = info.status
+
+        return Response(data)
+
+    def post(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        instance = get_object_or_404(Patent, user=user)
+        data = request.data
+        instance.year = self.request.data['year']
+        instance.patent_no = self.request.data['patent_no']
+        instance.details = self.request.data['details']
+        instance.status = self.request.data['status']
+        instance.save()
+        return Response({"message": "Data Saved"})
+
+
 class ArticleAPIView(CreateAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
