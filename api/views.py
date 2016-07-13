@@ -339,7 +339,6 @@ class EducationalUpdateAPIView(views.APIView):
         return Response({"message": "Data Saved"})
 
 
-
 class WorkExperienceAPIView(CreateAPIView):
     queryset = WorkExperience.objects.all()
     serializer_class = WorkExperienceSerializer
@@ -410,6 +409,68 @@ class WorkExperienceAPIView(CreateAPIView):
         return Response({"message": "Data Saved"})
 
 
+class WorkExperienceUpdateAPIView(views.APIView):
+    serializer_class = WorkExperienceSerializer
+
+    def get(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        info = get_object_or_404(WorkExperience, user=user)
+        data = dict()
+        data['from_intern'] = info.from_intern
+        data['to_intern'] = info.to_intern
+        data['company_intern'] = info.company_intern
+        data['title_intern'] = info.title_intern
+        data['status_intern'] = info.status_intern
+
+        data['from_job'] = info.from_job
+        data['to_job'] = info.to_job
+        data['company_job'] = info.company_job
+        data['title_job'] = info.title_job
+
+        data['from_freelancer'] = info.from_freelancer
+        data['to_freelancer'] = info.to_freelancer
+        data['client_freelancer'] = info.client_freelancer
+        data['project_freelancer'] = info.project_freelancer
+        data['status_freelancer'] = info.status_freelancer
+
+        data['from_self'] = info.from_self
+        data['to_self'] = info.to_self
+        data['project_self'] = info.project_self
+        data['status_self'] = info.status_self
+
+        return Response(data)
+
+    def post(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        instance = get_object_or_404(WorkExperience, user=user)
+        data = request.data
+        instance.from_intern = self.request.data['from_intern']
+        instance.to_intern = self.request.data['to_intern']
+        instance.company_intern = self.request.data['company_intern']
+        instance.title_intern = self.request.data['title_intern']
+        instance.status_intern = self.request.data['status_intern']
+
+        instance.from_job = self.request.data['from_job']
+        instance.to_job = self.request.data['to_job']
+        instance.company_job = self.request.data['company_job']
+        instance.title_job = self.request.data['title_job']
+
+        instance.from_freelancer = self.request.data['from_freelancer']
+        instance.to_freelancer = self.request.data['to_freelancer']
+        instance.client_freelancer = self.request.data['client_freelancer']
+        instance.project_freelancer = self.request.data['project_freelancer']
+        instance.status_freelancer = self.request.data['status_freelancer']
+
+        instance.from_self = self.request.data['from_self']
+        instance.to_self = self.request.data['to_self']
+        instance.project_self = self.request.data['project_self']
+        instance.status_self = self.request.data['status_self']
+
+        instance.save()
+        return Response({"message": "Data Saved"})
+
+
+
 class IntrestAPIView(CreateAPIView):
     queryset = Intrest.objects.all()
     serializer_class = IntrestSerializer
@@ -444,6 +505,27 @@ class IntrestAPIView(CreateAPIView):
         )
         info.save()
         return Response({"message": "Data Saved"})
+
+
+class IntrestUpdateAPIView(views.APIView):
+    serializer_class = IntrestSerializer
+
+    def get(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        info = get_object_or_404(Intrest, user=user)
+        data = dict()
+        data['intrest'] = info.intrest
+
+        return Response(data)
+
+    def post(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        instance = get_object_or_404(Intrest, user=user)
+        data = request.data
+        instance.intrest = self.request.data['intrest']
+        instance.save()
+        return Response({"message": "Data Saved"})
+
 
 
 class SkillsAPIView(CreateAPIView):
@@ -483,6 +565,9 @@ class SkillsAPIView(CreateAPIView):
         )
         info.save()
         return Response({"message": "Data Saved"})
+
+
+
 
 
 class CertificationAPIView(CreateAPIView):
