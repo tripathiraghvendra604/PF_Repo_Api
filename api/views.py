@@ -567,6 +567,28 @@ class SkillsAPIView(CreateAPIView):
         return Response({"message": "Data Saved"})
 
 
+class SkillsUpdateAPIView(views.APIView):
+    serializer_class = SkillsSerializer
+
+    def get(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        info = get_object_or_404(Skills, user=user)
+        data = dict()
+        data['technical'] = info.technical
+        data['soft'] = info.soft
+        data['other'] = info.other
+
+        return Response(data)
+
+    def post(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        instance = get_object_or_404(Skills, user=user)
+        data = request.data
+        instance.technical = self.request.data['technical']
+        instance.soft = self.request.data['soft']
+        instance.other = self.request.data['other']
+        instance.save()
+        return Response({"message": "Data Saved"})
 
 
 
