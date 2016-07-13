@@ -591,7 +591,6 @@ class SkillsUpdateAPIView(views.APIView):
         return Response({"message": "Data Saved"})
 
 
-
 class CertificationAPIView(CreateAPIView):
     queryset = Certification.objects.all()
     serializer_class = CertificationSerializer
@@ -631,6 +630,33 @@ class CertificationAPIView(CreateAPIView):
         )
         info.save()
         return Response({"message": "Data Saved"})
+
+
+class CertificationUpdateAPIView(views.APIView):
+    serializer_class = CertificationSerializer
+
+    def get(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        info = get_object_or_404(Certification, user=user)
+        data = dict()
+        data['year'] = info.year
+        data['agency'] = info.agency
+        data['details'] = info.details
+        data['mode'] = info.mode
+
+        return Response(data)
+
+    def post(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        instance = get_object_or_404(Certification, user=user)
+        data = request.data
+        instance.year = self.request.data['year']
+        instance.agency = self.request.data['agency']
+        instance.details = self.request.data['details']
+        instance.mode = self.request.data['mode']
+        instance.save()
+        return Response({"message": "Data Saved"})
+
 
 
 class PublicationAPIView(CreateAPIView):
