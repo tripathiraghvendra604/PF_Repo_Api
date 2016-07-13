@@ -23,7 +23,8 @@ from api.views import (UserViewSet,
                        SkillsAPIView, CertificationAPIView, PublicationAPIView, ArticleAPIView,
                        PatentAPIView, BookAPIView, ConferenceAPIView, AchievementAPIView,
                        ExtraCurricularAPIView, SocialMediaLinksAPIView, CertificationUpdateAPIView,
-                       PublicationUpdateAPIView, PatentUpdateAPIView, ArticleUpdateAPIView)
+                       PublicationUpdateAPIView, PatentUpdateAPIView, ArticleUpdateAPIView,
+                       BookUpdateAPIView)
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -53,6 +54,7 @@ urlpatterns = [
     url(r'^article/$', ArticleAPIView.as_view(), name='article'),
     url(r'^(?P<username>[\w.@+-]+)/article/$', ArticleUpdateAPIView.as_view(), name='article_update'),
     url(r'^book/', BookAPIView.as_view(), name='book'),
+    url(r'^(?P<username>[\w.@+-]+)/book/', BookUpdateAPIView.as_view(), name='book_update'),
     url(r'^poster/', PosterAPIView.as_view(), name='poster'),
     url(r'^conference/', ConferenceAPIView.as_view(), name='conference'),
     url(r'^achievement/', AchievementAPIView.as_view(), name='achievement'),

@@ -161,6 +161,9 @@ class Article(models.Model):
     title = models.TextField(null=True, blank=True)
     links = models.TextField(null=True, blank=True)
 
+    def __unicode__(self):
+        return self.user.username
+
 
 class Conference(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
