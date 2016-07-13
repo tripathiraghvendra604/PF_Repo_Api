@@ -125,7 +125,7 @@ class CertificationSerializer(serializers.ModelSerializer):
 class PublicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Publication
-        fields = ('year', 'journal', 'details', 'level',
+        fields = ('year', 'journal', 'details', 'level', 'status',
                   'user')
 
 
