@@ -17,7 +17,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from api.views import (UserViewSet,
                        UserInfoAPIView, UserUpdateViewSet,
-                       EducationalAPIView,
+                       EducationalAPIView, EducationalUpdateAPIView,
                        LoginView, LogoutView, PasswordResetView,
                        WorkExperienceAPIView, IntrestAPIView, PosterAPIView,
                        SkillsAPIView, CertificationAPIView, PublicationAPIView, ArticleAPIView,
@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^create/$', UserInfoAPIView.as_view(), name='user_info'),
     url(r'^(?P<username>[\w.@+-]+)/create/$', UserUpdateViewSet.as_view(), name='user_info_edit'), #update
     url(r'^education/', EducationalAPIView.as_view(), name='education_info'),
+    url(r'^(?P<username>[\w.@+-]+)/education/', EducationalUpdateAPIView.as_view(), name='education_info_update'),
     url(r'^work/', WorkExperienceAPIView.as_view(), name='work'),
     url(r'^intrest/', IntrestAPIView.as_view(), name='intrest'),
     url(r'^skills/', SkillsAPIView.as_view(), name='skills'),

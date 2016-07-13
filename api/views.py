@@ -312,6 +312,33 @@ class EducationalAPIView(CreateAPIView):
         return Response({"message": "Data Saved"})
 
 
+class EducationalUpdateAPIView(views.APIView):
+    serializer_class = EducationInfoSerializer
+
+    def get(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        info = UserInfo.objects.get(user=user)
+        data = dict()
+        data['year'] = info.year
+        data['degree'] = info.degree
+        data['agreegate'] = info.agreegate
+        data['institution'] = info.institution
+
+        return Response(data)
+
+    def post(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        instance = UserInfo.objects.get(user=user)
+        data = request.data
+        instance.year = self.request.data['year']
+        instance.degree = self.request.data['degree']
+        instance.agreegate = self.request.data['agreegate']
+        instance.institution = self.request.data['institution']
+        instance.save()
+        return Response({"message": "Data Saved"})
+
+
+
 class WorkExperienceAPIView(CreateAPIView):
     queryset = WorkExperience.objects.all()
     serializer_class = WorkExperienceSerializer
