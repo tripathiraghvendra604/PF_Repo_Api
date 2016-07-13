@@ -1256,7 +1256,6 @@ class ExtraCurricularUpdateAPIView(views.APIView):
         return Response({"message": "Data Saved"})
 
 
-
 class SocialMediaLinksAPIView(CreateAPIView):
     queryset = SocialMediaLinks.objects.all()
     serializer_class = SocialMediaLinksSerializer
@@ -1289,4 +1288,24 @@ class SocialMediaLinksAPIView(CreateAPIView):
             links=links,
         )
         info.save()
+        return Response({"message": "Data Saved"})
+
+
+class SocialMediaLinksUpdateAPIView(views.APIView):
+    serializer_class = SocialMediaLinksSerializer
+
+    def get(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        info = get_object_or_404(SocialMediaLinks, user=user)
+        data = dict()
+        data['links'] = info.links
+
+        return Response(data)
+
+    def post(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        instance = get_object_or_404(SocialMediaLinks, user=user)
+        instance.links = self.request.data['links']
+
+        instance.save()
         return Response({"message": "Data Saved"})

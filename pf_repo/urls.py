@@ -25,7 +25,7 @@ from api.views import (UserViewSet,
                        ExtraCurricularAPIView, SocialMediaLinksAPIView, CertificationUpdateAPIView,
                        PublicationUpdateAPIView, PatentUpdateAPIView, ArticleUpdateAPIView,
                        BookUpdateAPIView, PosterUpdateAPIView, ConferenceUpdateAPIView, ExtraCurricularUpdateAPIView,
-                       AchievemntUpdateAPIView)
+                       AchievemntUpdateAPIView, SocialMediaLinksUpdateAPIView)
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -64,7 +64,8 @@ urlpatterns = [
     url(r'^(?P<username>[\w.@+-]+)/achievement/', AchievemntUpdateAPIView.as_view(), name='achievement_update'),
     url(r'^extracurricular/', ExtraCurricularAPIView.as_view(), name='extracurricular'),
     url(r'^(?P<username>[\w.@+-]+)/extracurricular/', ExtraCurricularUpdateAPIView.as_view(), name='extracurricular_update'),
-    url(r'^links/', SocialMediaLinksAPIView.as_view(), name='links'),
+    url(r'^(?P<username>[\w.@+-]+)/links/', SocialMediaLinksAPIView.as_view(), name='links'),
+    url(r'^links/', SocialMediaLinksUpdateAPIView.as_view(), name='links_update'),
 
 ]
 
