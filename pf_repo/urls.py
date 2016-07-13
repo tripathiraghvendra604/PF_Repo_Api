@@ -64,8 +64,8 @@ urlpatterns = [
     url(r'^(?P<username>[\w.@+-]+)/achievement/', AchievemntUpdateAPIView.as_view(), name='achievement_update'),
     url(r'^extracurricular/', ExtraCurricularAPIView.as_view(), name='extracurricular'),
     url(r'^(?P<username>[\w.@+-]+)/extracurricular/', ExtraCurricularUpdateAPIView.as_view(), name='extracurricular_update'),
-    url(r'^(?P<username>[\w.@+-]+)/links/', SocialMediaLinksAPIView.as_view(), name='links'),
-    url(r'^links/', SocialMediaLinksUpdateAPIView.as_view(), name='links_update'),
+    url(r'^(?P<username>[\w.@+-]+)/links/', SocialMediaLinksUpdateAPIView.as_view(), name='links'),
+    url(r'^links/', SocialMediaLinksAPIView.as_view(), name='links'),
 
 ]
 
