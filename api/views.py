@@ -33,13 +33,6 @@ class UserViewSet(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    '''def get_permissions(self):
-        if self.request.method in permissions.SAFE_METHODS:
-            return (permissions.AllowAny(),)
-        if self.request.method == 'POST':
-            return (permissions.AllowAny(),)
-        return (permissions.IsAuthenticated(), IsAccountOwner(),)'''
-
     # for CSRF Token
     def get_or_create_csrf_token(self, request):
         token = request.META.get('CSRF_COOKIE', None)
@@ -84,6 +77,37 @@ class UserViewSet(CreateAPIView):
             'status': 'Bad request',
             'message': 'Account could not be created with received data.'
         }, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserUpdateViewSet(views.APIView):
+    serializer_class = UserInfoSerializer
+
+    def get(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        info = UserInfo.objects.get(user=user)
+        data = dict()
+        data['name'] = info.name
+        data['email'] = info.email
+        data['phone'] = info.phone
+        data['dob'] = info.dob
+        try:
+            data['profilePic'] = info.profilePic.url
+        except:
+            data['profilePic'] = ''
+
+        return Response(data)
+
+    def post(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        instance = UserInfo.objects.get(user=user)
+        data = request.data
+        instance.name = self.request.data['name']
+        instance.email = self.request.data['email']
+        instance.phone = self.request.data['phone']
+        instance.dob = self.request.data['dob']
+        instance.profilePic = self.request.data['profilePic']
+        instance.save()
+        return Response({"message": "Data Saved"})
 
 
 class LoginView(views.APIView):

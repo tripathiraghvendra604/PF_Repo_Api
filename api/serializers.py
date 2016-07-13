@@ -67,7 +67,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInfo
-        fields = ('name', 'email', 'phone', 'dob', 'profilePic')
+        fields = ('name', 'email', 'phone', 'dob', 'profilePic', 'user')
 
     '''def create(self, validated_data):
         name= validated_data['name']

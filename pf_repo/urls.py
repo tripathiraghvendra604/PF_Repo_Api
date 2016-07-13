@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from api.views import (UserViewSet,
-                       UserInfoAPIView,
+                       UserInfoAPIView, UserUpdateViewSet,
                        EducationalAPIView,
                        LoginView, LogoutView, PasswordResetView,
                        WorkExperienceAPIView, IntrestAPIView, PosterAPIView,
@@ -33,7 +33,8 @@ urlpatterns = [
     url(r'^accounts/login', LoginView.as_view(), name='login'),
     url(r'^accounts/logout', LogoutView.as_view(), name='logout'),
     url(r'^password_reset', PasswordResetView.as_view(), name='password_reset'),
-    url(r'^create/', UserInfoAPIView.as_view(), name='user_info'),
+    url(r'^create/$', UserInfoAPIView.as_view(), name='user_info'),
+    url(r'^(?P<username>[\w.@+-]+)/create/$', UserUpdateViewSet.as_view(), name='user_info_edit'), #update
     url(r'^education/', EducationalAPIView.as_view(), name='education_info'),
     url(r'^work/', WorkExperienceAPIView.as_view(), name='work'),
     url(r'^intrest/', IntrestAPIView.as_view(), name='intrest'),
