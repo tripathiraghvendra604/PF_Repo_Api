@@ -317,7 +317,8 @@ class EducationalUpdateAPIView(views.APIView):
 
     def get(self, request, username, *args, **kwargs):
         user = get_object_or_404(User, username=username)
-        info = UserInfo.objects.get(user=user)
+        #info = EducationInfo.objects.get(user=user)
+        info = get_object_or_404(EducationInfo, user=user)
         data = dict()
         data['year'] = info.year
         data['degree'] = info.degree
@@ -328,7 +329,7 @@ class EducationalUpdateAPIView(views.APIView):
 
     def post(self, request, username, *args, **kwargs):
         user = get_object_or_404(User, username=username)
-        instance = UserInfo.objects.get(user=user)
+        instance = get_object_or_404(EducationInfo, user=user)
         data = request.data
         instance.year = self.request.data['year']
         instance.degree = self.request.data['degree']

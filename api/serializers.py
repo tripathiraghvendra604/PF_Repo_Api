@@ -90,7 +90,7 @@ class UserInfoSerializer(serializers.ModelSerializer):
 class EducationInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = EducationInfo
-        fields = ('year', 'degree', 'agreegate', 'user')
+        fields = ('year', 'degree', 'agreegate', 'institution',  'user')
 
 
 class WorkExperienceSerializer(serializers.ModelSerializer):
