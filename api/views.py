@@ -1147,6 +1147,38 @@ class AchievementAPIView(CreateAPIView):
         return Response({"message": "Data Saved"})
 
 
+class AchievemntUpdateAPIView(views.APIView):
+    serializer_class = AchievementSerializer
+
+    def get(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        info = get_object_or_404(Achievement, user=user)
+        data = dict()
+        data['year_a'] = info.year_a
+        data['org_a'] = info.org_a
+        data['detail_a'] = info.detail_a
+
+        data['year_s'] = info.year_s
+        data['org_s'] = info.org_s
+        data['detail_s'] = info.detail_s
+
+        return Response(data)
+
+    def post(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        instance = get_object_or_404(Achievement, user=user)
+        instance.year_a = self.request.data['year_a']
+        instance.org_a = self.request.data['org_a']
+        instance.detail_a = self.request.data['detail_a']
+
+        instance.year_s = self.request.data['year_s']
+        instance.org_s = self.request.data['org_s']
+        instance.detail_s = self.request.data['detail_s']
+
+        instance.save()
+        return Response({"message": "Data Saved"})
+
+
 class ExtraCurricularAPIView(CreateAPIView):
     queryset = Extracurricular.objects.all()
     serializer_class = ExtraCurricularSerializer
@@ -1190,6 +1222,39 @@ class ExtraCurricularAPIView(CreateAPIView):
         )
         info.save()
         return Response({"message": "Data Saved"})
+
+
+class ExtraCurricularUpdateAPIView(views.APIView):
+    serializer_class = ExtraCurricularSerializer
+
+    def get(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        info = get_object_or_404(Extracurricular, user=user)
+        data = dict()
+        data['year_e'] = info.year_e
+        data['org_e'] = info.org_e
+        data['details_e'] = info.details_e
+
+        data['year_v'] = info.year_v
+        data['org_v'] = info.org_v
+        data['details_v'] = info.details_v
+
+        return Response(data)
+
+    def post(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        instance = get_object_or_404(Extracurricular, user=user)
+        instance.year_e = self.request.data['year_e']
+        instance.org_e = self.request.data['org_e']
+        instance.details_e = self.request.data['details_e']
+
+        instance.year_v = self.request.data['year_v']
+        instance.org_v = self.request.data['org_v']
+        instance.details_v = self.request.data['details_v']
+
+        instance.save()
+        return Response({"message": "Data Saved"})
+
 
 
 class SocialMediaLinksAPIView(CreateAPIView):
