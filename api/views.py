@@ -1009,7 +1009,6 @@ class PosterUpdateAPIView(views.APIView):
         return Response({"message": "Data Saved"})
 
 
-
 class ConferenceAPIView(CreateAPIView):
     queryset = Conference.objects.all()
     serializer_class = ConferenceSerializer
@@ -1060,6 +1059,46 @@ class ConferenceAPIView(CreateAPIView):
             title_i=title_i,
         )
         info.save()
+        return Response({"message": "Data Saved"})
+
+
+class ConferenceUpdateAPIView(views.APIView):
+    serializer_class = ConferenceSerializer
+
+    def get(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        info = get_object_or_404(Conference, user=user)
+        data = dict()
+        data['year_c'] = info.year_c
+        data['org_c'] = info.org_c
+        data['detail_c'] = info.detail_c
+        data['status_c'] = info.status_c
+        data['title_c'] = info.title_c
+
+        data['year_i'] = info.year_i
+        data['org_i'] = info.org_i
+        data['detail_i'] = info.detail_i
+        data['status_i'] = info.status_i
+        data['title_i'] = info.title_i
+
+        return Response(data)
+
+    def post(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        instance = get_object_or_404(Conference, user=user)
+        instance.year_c = self.request.data['year_c']
+        instance.org_c = self.request.data['org_c']
+        instance.detail_c = self.request.data['detail_c']
+        instance.status_c = self.request.data['status_c']
+        instance.title_c = self.request.data['title_c']
+
+        instance.year_i = self.request.data['year_i']
+        instance.org_i = self.request.data['org_i']
+        instance.detail_i = self.request.data['detail_i']
+        instance.status_i = self.request.data['status_i']
+        instance.title_i = self.request.data['title_i']
+
+        instance.save()
         return Response({"message": "Data Saved"})
 
 
