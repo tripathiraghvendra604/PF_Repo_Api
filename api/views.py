@@ -26,6 +26,7 @@ from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from django.middleware import csrf
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.sessions.models import Session
+from django.core.mail import send_mail
 
 
 class UserViewSet(CreateAPIView):
@@ -67,7 +68,9 @@ class UserViewSet(CreateAPIView):
 
             else:
                 User.objects.create_user(**serializer.validated_data)
-
+                send_mail('Account Registered', 'You are successfully registered in PF-Repo',
+                          'tripathiraghav604@gmail.com', [email], fail_silently=False)
+                print 'mail send'
                 return Response({
                     'status': 'Account Created',
                     'message': 'User Registered'
@@ -1312,141 +1315,265 @@ class RetrieveUserInfoApiView(views.APIView):
     def get(self, request, username, *args, **kwargs):
         user = get_object_or_404(User, username=username)
         data = dict()
-        info = get_object_or_404(UserInfo, user=user)
         #for userinfo
-        data['name'] = info.name
-        data['email'] = info.email
-        data['phone'] = info.phone
-        data['dob'] = info.dob
         try:
-            data['profilePic'] = info.profilePic.url
+            #info = get_object_or_404(UserInfo, user=user)
+            info = UserInfo.objects.get(user=user)
+            data['name'] = info.name
+            data['email'] = info.email
+            data['phone'] = info.phone
+            data['dob'] = info.dob
+            try:
+                data['profilePic'] = info.profilePic.url
+            except:
+                data['profilePic'] = 'not added'
+
         except:
-            data['profilePic'] = ''
+            data['name'] = 'not added'
+            data['email'] = 'not added'
+            data['phone'] = 'not added'
+            data['dob'] = 'not added'
+            data['profilePic'] = 'not added'
 
         #for education info
-        info = get_object_or_404(EducationInfo, user=user)
-        data['year'] = info.year
-        data['degree'] = info.degree
-        data['agreegate'] = info.agreegate
-        data['institution'] = info.institution
+        try:
+            info = EducationInfo.objects.get(user=user)
+            data['year'] = info.year
+            data['degree'] = info.degree
+            data['agreegate'] = info.agreegate
+            data['institution'] = info.institution
+        except:
+            data['year'] = 'not added'
+            data['degree'] = 'not added'
+            data['agreegate'] = 'not added'
+            data['institution'] = 'not added'
 
         #for work experience
-        info = get_object_or_404(WorkExperience, user=user)
-        data['from_intern'] = info.from_intern
-        data['to_intern'] = info.to_intern
-        data['company_intern'] = info.company_intern
-        data['title_intern'] = info.title_intern
-        data['status_intern'] = info.status_intern
+        try:
+            info = WorkExperience.objects.get(user=user)
+            data['from_intern'] = info.from_intern
+            data['to_intern'] = info.to_intern
+            data['company_intern'] = info.company_intern
+            data['title_intern'] = info.title_intern
+            data['status_intern'] = info.status_intern
 
-        data['from_job'] = info.from_job
-        data['to_job'] = info.to_job
-        data['company_job'] = info.company_job
-        data['title_job'] = info.title_job
+            data['from_job'] = info.from_job
+            data['to_job'] = info.to_job
+            data['company_job'] = info.company_job
+            data['title_job'] = info.title_job
 
-        data['from_freelancer'] = info.from_freelancer
-        data['to_freelancer'] = info.to_freelancer
-        data['client_freelancer'] = info.client_freelancer
-        data['project_freelancer'] = info.project_freelancer
-        data['status_freelancer'] = info.status_freelancer
+            data['from_freelancer'] = info.from_freelancer
+            data['to_freelancer'] = info.to_freelancer
+            data['client_freelancer'] = info.client_freelancer
+            data['project_freelancer'] = info.project_freelancer
+            data['status_freelancer'] = info.status_freelancer
 
-        data['from_self'] = info.from_self
-        data['to_self'] = info.to_self
-        data['project_self'] = info.project_self
-        data['status_self'] = info.status_self
+            data['from_self'] = info.from_self
+            data['to_self'] = info.to_self
+            data['project_self'] = info.project_self
+            data['status_self'] = info.status_self
+        except:
+            data['from_intern'] = 'not added'
+            data['to_intern'] = 'not added'
+            data['company_intern'] = 'not added'
+            data['title_intern'] = 'not added'
+            data['status_intern'] = 'not added'
+
+            data['from_job'] = 'not added'
+            data['to_job'] = 'not added'
+            data['company_job'] = 'not added'
+            data['title_job'] = 'not added'
+
+            data['from_freelancer'] = 'not added'
+            data['to_freelancer'] = 'not added'
+            data['client_freelancer'] = 'not added'
+            data['project_freelancer'] = 'not added'
+            data['status_freelancer'] = 'not added'
+
+            data['from_self'] = 'not added'
+            data['to_self'] = 'not added'
+            data['project_self'] = 'not added'
+            data['status_self'] = 'not added'
 
         #for intrest
-        info = get_object_or_404(Intrest, user=user)
-        data['intrest'] = info.intrest
+        try:
+            info = Intrest.objects.get(user=user)
+            data['intrest'] = info.intrest
+        except:
+            data['intrest'] = 'not added'
+
 
         #for skills
-        info = get_object_or_404(Skills, user=user)
-        data['technical'] = info.technical
-        data['soft'] = info.soft
-        data['other'] = info.other
+        try:
+            info = Skills.objects.get(user=user)
+            data['technical'] = info.technical
+            data['soft'] = info.soft
+            data['other'] = info.other
+        except:
+            data['technical'] = 'not added'
+            data['soft'] = 'not added'
+            data['other'] = 'not added'
 
         #for certification
-        info = get_object_or_404(Certification, user=user)
-        data['year'] = info.year
-        data['agency'] = info.agency
-        data['details'] = info.details
-        data['mode'] = info.mode
+        try:
+            info = Certification.objects.get(user=user)
+            data['year'] = info.year
+            data['agency'] = info.agency
+            data['details'] = info.details
+            data['mode'] = info.mode
+        except:
+            data['year'] = 'not added'
+            data['agency'] = 'not added'
+            data['details'] = 'not added'
+            data['mode'] = 'not added'
 
         #for publication
-        info = get_object_or_404(Publication, user=user)
-        data['year'] = info.year
-        data['journal'] = info.journal
-        data['details'] = info.details
-        data['status'] = info.status
-        data['level'] = info.level
+        try:
+            info = Publication.objects.get(user=user)
+            data['year'] = info.year
+            data['journal'] = info.journal
+            data['details'] = info.details
+            data['status'] = info.status
+            data['level'] = info.level
+        except:
+            data['year'] = 'not added'
+            data['journal'] = 'not added'
+            data['details'] = 'not added'
+            data['status'] = 'not added'
+            data['level'] = 'not added'
 
         # for patent
-        info = get_object_or_404(Patent, user=user)
-        data['year'] = info.year
-        data['patent_no'] = info.patent_no
-        data['details'] = info.details
-        data['status'] = info.status
+        try:
+            info = Patent.objects.get(user=user)
+            data['year'] = info.year
+            data['patent_no'] = info.patent_no
+            data['details'] = info.details
+            data['status'] = info.status
+        except:
+            data['year'] = 'not added'
+            data['patent_no'] = 'not added'
+            data['details'] = 'not added'
+            data['status'] = 'not added'
 
         #for article
-        info = get_object_or_404(Article, user=user)
-        data['year'] = info.year
-        data['details'] = info.details
-        data['publisher'] = info.publisher
-        data['title'] = info.title
-        data['links'] = info.links
+        try:
+            info = Article.objects.get(user=user)
+            data['year'] = info.year
+            data['details'] = info.details
+            data['publisher'] = info.publisher
+            data['title'] = info.title
+            data['links'] = info.links
+        except:
+            data['year'] = 'not added'
+            data['details'] = 'not added'
+            data['publisher'] = 'not added'
+            data['title'] = 'not added'
+            data['links'] = 'not added'
 
         #for books
-        info = get_object_or_404(Books, user=user)
-        data['year'] = info.year
-        data['title'] = info.title
-        data['publisher'] = info.publisher
-        data['detail'] = info.detail
-        data['isbn'] = info.isbn
-        data['links'] = info.links
+        try:
+            info = Books.objects.get(user=user)
+            data['year'] = info.year
+            data['title'] = info.title
+            data['publisher'] = info.publisher
+            data['detail'] = info.detail
+            data['isbn'] = info.isbn
+            data['links'] = info.links
+        except:
+            data['year'] = 'not added'
+            data['title'] = 'not added'
+            data['publisher'] = 'not added'
+            data['detail'] = 'not added'
+            data['isbn'] = 'not added'
+            data['links'] = 'not added'
 
         #for poster
-        info = get_object_or_404(Poster, user=user)
-        data['year'] = info.year
-        data['title'] = info.title
-        data['org'] = info.org
-        data['detail'] = info.detail
-        data['link'] = info.link
+        try:
+            info = Poster.objects.get(user=user)
+            data['year'] = info.year
+            data['title'] = info.title
+            data['org'] = info.org
+            data['detail'] = info.detail
+            data['link'] = info.link
+        except:
+            data['year'] = 'not added'
+            data['title'] = 'not added'
+            data['org'] = 'not added'
+            data['detail'] = 'not added'
+            data['link'] = 'not added'
 
         #for conference
-        info = get_object_or_404(Conference, user=user)
-        data['year_c'] = info.year_c
-        data['org_c'] = info.org_c
-        data['detail_c'] = info.detail_c
-        data['status_c'] = info.status_c
-        data['title_c'] = info.title_c
+        try:
+            info = Conference.objects.get(user=user)
+            data['year_c'] = info.year_c
+            data['org_c'] = info.org_c
+            data['detail_c'] = info.detail_c
+            data['status_c'] = info.status_c
+            data['title_c'] = info.title_c
 
-        data['year_i'] = info.year_i
-        data['org_i'] = info.org_i
-        data['detail_i'] = info.detail_i
-        data['status_i'] = info.status_i
-        data['title_i'] = info.title_i
+            data['year_i'] = info.year_i
+            data['org_i'] = info.org_i
+            data['detail_i'] = info.detail_i
+            data['status_i'] = info.status_i
+            data['title_i'] = info.title_i
+        except:
+            data['year_c'] = 'not added'
+            data['org_c'] = 'not added'
+            data['detail_c'] = 'not added'
+            data['status_c'] = 'not added'
+            data['title_c'] = 'not added'
+
+            data['year_i'] = 'not added'
+            data['org_i'] = 'not added'
+            data['detail_i'] = 'not added'
+            data['status_i'] = 'not added'
+            data['title_i'] = 'not added'
 
         #for achievement
-        info = get_object_or_404(Achievement, user=user)
-        data['year_a'] = info.year_a
-        data['org_a'] = info.org_a
-        data['detail_a'] = info.detail_a
+        try:
+            info = Achievement.objects.get(user=user)
+            data['year_a'] = info.year_a
+            data['org_a'] = info.org_a
+            data['detail_a'] = info.detail_a
 
-        data['year_s'] = info.year_s
-        data['org_s'] = info.org_s
-        data['detail_s'] = info.detail_s
+            data['year_s'] = info.year_s
+            data['org_s'] = info.org_s
+            data['detail_s'] = info.detail_s
+
+        except:
+            data['year_a'] = 'not added'
+            data['org_a'] = 'not added'
+            data['detail_a'] = 'not added'
+
+            data['year_s'] = 'not added'
+            data['org_s'] = 'not added'
+            data['detail_s'] = 'not added'
 
         # extracurricular
-        info = get_object_or_404(Extracurricular, user=user)
-        data['year_e'] = info.year_e
-        data['org_e'] = info.org_e
-        data['details_e'] = info.details_e
+        try:
+            info = Extracurricular.objects.get(user=user)
+            data['year_e'] = info.year_e
+            data['org_e'] = info.org_e
+            data['details_e'] = info.details_e
 
-        data['year_v'] = info.year_v
-        data['org_v'] = info.org_v
-        data['details_v'] = info.details_v
+            data['year_v'] = info.year_v
+            data['org_v'] = info.org_v
+            data['details_v'] = info.details_v
+        except:
+            data['year_e'] = 'not added'
+            data['org_e'] = 'not added'
+            data['details_e'] = 'not added'
+
+            data['year_v'] = 'not added'
+            data['org_v'] = 'not added'
+            data['details_v'] = 'not added'
 
         # for social links
-        info = get_object_or_404(SocialMediaLinks, user=user)
-        data['links'] = info.links
+        try:
+            info = SocialMediaLinks(user=user)
+            data['links'] = info.links
+        except:
+            data['links'] = 'not added'
+
 
         return Response(data)
